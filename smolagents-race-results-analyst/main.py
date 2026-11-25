@@ -12,6 +12,7 @@ load_dotenv(Path(__file__).parent / ".env")
 from smolagents import CodeAgent, OpenAIModel  # noqa: E402
 
 from analysis import CSV_PATH, check_answer, expected_answers, load_rows  # noqa: E402
+from tracing import setup_tracing  # noqa: E402
 
 PROJECT_NAME = "smolagents-race-results-analyst"
 
@@ -48,6 +49,7 @@ def build_agent() -> CodeAgent:
 
 
 def main() -> None:
+    provider = setup_tracing(PROJECT_NAME)
     agent = build_agent()
     expected = expected_answers(load_rows())
     correct = 0
@@ -58,6 +60,10 @@ def main() -> None:
         correct += not problems
         print(f"\nAnswer {i}: {answer}\nGrade: {'correct' if not problems else 'WRONG ' + '; '.join(problems)}")
     print(f"\n{correct}/{len(QUESTIONS)} answers match the ground truth.")
+
+    # Shut the provider down so any buffered spans are exported before the process exits.
+    provider.shutdown()
+    print(f"Open the '{PROJECT_NAME}' project in Opik: one trace per question.")
 
 
 if __name__ == "__main__":

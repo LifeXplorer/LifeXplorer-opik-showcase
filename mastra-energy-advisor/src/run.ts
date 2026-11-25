@@ -1,4 +1,4 @@
-// `npm run demo`: asks the advisor three questions, each one agent loop.
+// `npm run demo`: asks the advisor three questions, each one agent loop (one Opik trace each).
 import { config } from "dotenv";
 import { fileURLToPath } from "node:url";
 import { QUESTIONS } from "./questions.ts";
@@ -23,4 +23,6 @@ for (const [i, question] of QUESTIONS.entries()) {
   console.log(`Wattle:    ${result.text}`);
 }
 
+// shutdown() flushes the OTel exporter; without it the last spans never reach Opik.
 await mastra.shutdown();
+console.log('\nDone. Open the "mastra-energy-advisor" project in Opik to see the traces.');

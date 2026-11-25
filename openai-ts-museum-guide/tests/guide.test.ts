@@ -1,7 +1,7 @@
 import { Opik } from "opik";
 import { describe, expect, it, vi } from "vitest";
 import { loadCollection } from "../src/collection.js";
-import { MuseumGuide, type ChatClient } from "../src/guide.js";
+import { MuseumGuide, newThreadId, type ChatClient } from "../src/guide.js";
 
 function stubClient(replies: string[]) {
   const create = vi.fn(async () => ({
@@ -38,5 +38,14 @@ describe("MuseumGuide (tracking disabled via OPIK_TRACK_DISABLE)", () => {
     expect(secondCall[1]?.content).toBe("Tell me about the orrery");
     const firstSystem = calls[0]![0].messages[0]!.content;
     expect(firstSystem).toContain("The Marlow Orrery");
+  });
+});
+
+describe("newThreadId", () => {
+  it("keeps the label but never repeats, so re-runs start fresh threads", () => {
+    const a = newThreadId("family-visit");
+    const b = newThreadId("family-visit");
+    expect(a).toMatch(/^family-visit-[0-9a-f]{8}$/);
+    expect(a).not.toBe(b);
   });
 });

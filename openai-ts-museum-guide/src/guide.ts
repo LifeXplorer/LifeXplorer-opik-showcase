@@ -1,9 +1,18 @@
+import { randomUUID } from "node:crypto";
 import type OpenAI from "openai";
 import type { Opik } from "opik";
 import { trackOpenAI } from "opik-openai";
 import { buildSystemPrompt, findExhibits, type Collection } from "./collection.js";
 
 export const MODEL = "gpt-4o-mini";
+
+/**
+ * A thread id must be unique per conversation. A bare label like "family-visit" would make every
+ * re-run append its turns to the same Opik thread, so each conversation gets a random suffix.
+ */
+export function newThreadId(label: string): string {
+  return `${label}-${randomUUID().slice(0, 8)}`;
+}
 
 type Turn = { role: "user" | "assistant"; content: string };
 

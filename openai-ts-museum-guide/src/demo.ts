@@ -4,7 +4,7 @@ import { Opik } from "opik";
 import { loadCollection } from "./collection.js";
 import { loadEnv } from "./env.js";
 import { logVisitorRating, type VisitorRating } from "./feedback.js";
-import { MuseumGuide } from "./guide.js";
+import { MuseumGuide, newThreadId } from "./guide.js";
 
 loadEnv();
 
@@ -43,7 +43,7 @@ async function runDemo(opik: Opik): Promise<void> {
   const lastTraceIds = new Map<string, string>();
   for (const [conversationId, turns] of Object.entries(CONVERSATIONS)) {
     console.log(`\n=== Conversation: ${conversationId} ===`);
-    const guide = new MuseumGuide(conversationId, collection, client, opik);
+    const guide = new MuseumGuide(newThreadId(conversationId), collection, client, opik);
     for (const message of turns) {
       console.log(`\nVisitor: ${message}`);
       const reply = await guide.answer(message);
@@ -63,7 +63,7 @@ async function runDemo(opik: Opik): Promise<void> {
 }
 
 async function runInteractive(opik: Opik): Promise<void> {
-  const guide = new MuseumGuide(`interactive-${Date.now().toString(36)}`, loadCollection(), new OpenAI(), opik);
+  const guide = new MuseumGuide(newThreadId("interactive"), loadCollection(), new OpenAI(), opik);
   const rl = createInterface({ input: process.stdin, output: process.stdout });
   console.log("Wrenfield visitor guide. Ctrl+C to quit.");
   try {

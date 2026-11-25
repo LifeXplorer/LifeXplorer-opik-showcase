@@ -17,6 +17,7 @@ load_dotenv(find_dotenv(usecwd=True))
 os.environ["OPIK_PROJECT_NAME"] = "openai-agents-insurance-claims"
 
 import opik
+from agents.extensions.handoff_prompt import RECOMMENDED_PROMPT_PREFIX
 from agents import Agent, Runner, function_tool, set_trace_processors, trace
 from opik.integrations.openai.agents import OpikTracingProcessor
 
@@ -27,6 +28,15 @@ import claims_core
 set_trace_processors(processors=[OpikTracingProcessor()])
 
 MODEL = "gpt-4o-mini"
+
+# Without this, a specialist can announce "transferring you to Auto Claims"
+# instead of working: the handoff span is there but no tool spans follow.
+SPECIALIST_RULES = (
+    RECOMMENDED_PROMPT_PREFIX + "\n"
+    "You ARE the specialist: never transfer the customer again. Always "
+    "call lookup_policy before replying, and if the policy is lapsed say "
+    "the claim cannot be opened. "
+)
 
 
 @function_tool
@@ -50,7 +60,7 @@ def open_claim(policy_id: str, summary: str) -> str:
 auto_agent = Agent(
     name="Auto Claims Agent",
     handoff_description="Vehicle collisions, theft, and damage to cars.",
-    instructions=(
+    instructions=SPECIALIST_RULES + (
         "You handle auto claims. Look up the policy first, estimate the "
         "payout when a damage amount is given, and open the claim only "
         "when the customer asks. Keep replies to three sentences."
@@ -62,7 +72,7 @@ auto_agent = Agent(
 property_agent = Agent(
     name="Property Claims Agent",
     handoff_description="Home damage: water, fire, storm, break-ins.",
-    instructions=(
+    instructions=SPECIALIST_RULES + (
         "You handle home and property claims. Look up the policy first, "
         "estimate the payout when a damage amount is given, and open the "
         "claim only when the customer asks. Keep replies to three sentences."
@@ -73,8 +83,8 @@ property_agent = Agent(
 
 triage_agent = Agent(
     name="Claims Triage Agent",
-    instructions=(
-        "You are the front desk of an insurance claims line. Hand every "
+    instructions=RECOMMENDED_PROMPT_PREFIX + (
+        "\nYou are the front desk of an insurance claims line. Hand every "
         "claim to the right specialist: cars go to auto, houses and "
         "belongings go to property. Never answer the claim yourself."
     ),

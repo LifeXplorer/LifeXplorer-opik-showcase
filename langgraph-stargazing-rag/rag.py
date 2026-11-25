@@ -6,6 +6,7 @@ model so the same code runs against OpenAI or against offline fakes.
 
 import pathlib
 
+import opik
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
 from langchain_core.vectorstores import InMemoryVectorStore
@@ -50,6 +51,9 @@ def build_app(embeddings: Embeddings, llm: BaseChatModel, k: int = 3,
     """Compile the retrieve -> generate graph, fetching `k` sections per question."""
     store = InMemoryVectorStore.from_texts(chunks or load_chunks(), embeddings)
 
+    # type="tool" gives retrieval its own named span (input: the question, output: the k
+    # sections), nested under the graph's retrieve node, whatever the retriever callbacks do.
+    @opik.track(name="search_handbook", type="tool")
     def search_handbook(question: str) -> list[str]:
         return [d.page_content for d in store.similarity_search(question, k=k)]
 

@@ -6,6 +6,8 @@ import { randomUUID } from "node:crypto";
 import path from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
 import { loadEnv } from "../src/lib/server-env";
+import { PROJECT_NAME } from "../src/lib/telemetry";
+import { ensureOnlineRule } from "./opik-rule";
 
 loadEnv();
 
@@ -98,6 +100,10 @@ async function waitForServer(timeoutMs = 90_000): Promise<void> {
   throw new Error("Dev server did not become ready in time");
 }
 
+// Create the online-evaluation rule first: it only scores traces that arrive
+// after it exists, so it has to be in place before the conversations start.
+console.log(await ensureOnlineRule());
+
 console.log(`Starting the SvelteKit dev server on port ${PORT}...`);
 const server = spawn(path.join(root, "node_modules", ".bin", "vite"), ["dev", "--port", PORT, "--strictPort"], {
   cwd: root,
@@ -126,6 +132,13 @@ try {
     }
     console.log();
   }
+
+  // The exporter batches spans every few seconds; wait so the last turn is
+  // exported before the server is stopped.
+  console.log("Waiting for traces to flush to Opik...");
+  await sleep(10_000);
+  const ui = (process.env.OPIK_URL_OVERRIDE ?? "http://localhost:5173/api/").replace(/\/api\/?$/, "");
+  console.log(`Done. Open the ${PROJECT_NAME} project at ${ui}`);
 } finally {
   try {
     if (server.pid) process.kill(-server.pid, "SIGTERM");

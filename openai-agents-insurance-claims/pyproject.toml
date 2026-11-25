@@ -7,3 +7,9 @@ dependencies = [
     "opik>=2.3.4",
     "python-dotenv>=1.2.3",
 ]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

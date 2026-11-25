@@ -111,6 +111,17 @@ CONVERSATIONS = {
 }
 
 
+def run_turn(history: list, thread_id: str):
+    # One SDK trace per turn. The shared group_id becomes the Opik thread
+    # id, so the turns of a claim read as one conversation in Threads.
+    with trace(workflow_name="Claims intake", group_id=thread_id):
+        return Runner.run_sync(triage_agent, history)
+
+
+def score_routing(rows: list[dict]) -> list[dict]:
+    return [{**r, "ok": r["expected"] == r["routed_to"]} for r in rows]
+
+
 def run_demo() -> list[dict]:
     rows = []
     for name, spec in CONVERSATIONS.items():
@@ -120,10 +131,7 @@ def run_demo() -> list[dict]:
         for message in spec["turns"]:
             print(f"\nCustomer: {message}")
             history.append({"role": "user", "content": message})
-            # One SDK trace per turn. The shared group_id becomes the Opik
-            # thread id, so the turns of a claim read as one conversation.
-            with trace(workflow_name="Claims intake", group_id=thread_id):
-                result = Runner.run_sync(triage_agent, history)
+            result = run_turn(history, thread_id)
             print(f"{result.last_agent.name}: {result.final_output}")
             history = result.to_input_list()
         rows.append({"conversation": name, "expected": spec["expected"],
@@ -133,7 +141,7 @@ def run_demo() -> list[dict]:
 
 if __name__ == "__main__":
     try:
-        for row in run_demo():
+        for row in score_routing(run_demo()):
             print(row)
     finally:
         # Traces are sent in the background; without a flush the last

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "pancakes",
+    "text": "nonna's sunday pancakes (from my aunt Ilse). 2 cups flour, 2 tbsp sugar, 1 tsp baking powder, pinch of salt, 1 1/2 cups milk, 1 egg, 3 tbsp melted butter. whisk dry, add wet, dont overmix!! pan on medium, ~2 min a side. makes about 8",
+    "assertions": [
+      "The title mentions pancakes and the credit is Aunt Ilse",
+      "servings is 8 and the flour quantity is 2 cups",
+      "oven_temp_c is null because pancakes are cooked in a pan"
+    ]
+  },
+  {
+    "id": "shakshuka",
+    "text": "SHAKSUKA?? tin of tomatoes, 1 onion, 2 cloves garlic, red pepper, cumin + paprika (maybe 1 tsp each), 4-5 eggs. soften onion/pepper, add garlic + spices, tomatoes, simmer til thick, make wells, eggs in, lid on til set. serve w bread",
+    "assertions": [
+      "The eggs quantity is 4-5 (or 4 to 5), not a single made-up number",
+      "servings, cook_minutes and oven_temp_c are all null because the note gives none of them",
+      "The salt is not listed as an ingredient, since the note never mentions it"
+    ]
+  },
+  {
+    "id": "banana-bread",
+    "text": "banana bread v3 - the good one. oven 175C. 3 very ripe bananas mashed, 80g butter melted, 150g sugar, 1 egg, 1 tsp vanilla, 1 tsp bicarb, 190g flour. mix, tin, bake ~55 min. v2 was too dry so DONT add the extra yoghurt",
+    "assertions": [
+      "oven_temp_c is 175 and cook_minutes is 55",
+      "The ingredients do not include yoghurt, which the note says not to add",
+      "The flour quantity is 190 g and the sugar quantity is 150 g"
+    ]
+  },
+  {
+    "id": "dal",
+    "text": "quick dal for 4: red lentils 1 cup rinsed, 3 cups water, turmeric half tsp, salt. boil 20 min till soft. separate pan: ghee, cumin seeds, garlic, dried chilli, pour over. lime to finish",
+    "assertions": [
+      "servings is 4",
+      "The turmeric quantity is half a teaspoon (0.5 or 1/2 tsp)",
+      "prep_minutes and oven_temp_c are null because the note gives neither"
+    ]
+  },
+  {
+    "id": "lemon-bars",
+    "text": "lemon bars from the church cookbook, page torn. base: butter, flour, sugar (amounts gone!!). filling: 4 eggs, 2 lemons juiced + zested, 1 1/2 cups sugar. bake base 20 min then filling 25 min at 350F",
+    "assertions": [
+      "The base ingredients butter, flour and sugar are listed with quantity null because the amounts are lost",
+      "The eggs quantity is 4 and the filling sugar is 1 1/2 cups",
+      "servings is null because the note does not say how many it makes"
+    ]
+  }
+]

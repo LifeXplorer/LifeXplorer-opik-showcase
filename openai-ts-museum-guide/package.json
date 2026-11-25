@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "description": "A museum visitor-guide chatbot built on the OpenAI TypeScript SDK",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "demo": "tsx src/demo.ts",
     "dev": "tsx src/demo.ts --interactive",
@@ -13,12 +15,19 @@
   },
   "dependencies": {
     "dotenv": "^17.2.3",
-    "openai": "^6.9.0"
+    "openai": "^6.9.0",
+    "opik": "2.3.4",
+    "opik-openai": "2.3.4"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "vitest": "^3.2.4"
+  },
+  "overrides": {
+    "opik-openai": {
+      "opik": "$opik"
+    }
   }
 }

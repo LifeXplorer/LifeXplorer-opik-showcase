@@ -1,5 +1,6 @@
 import { createInterface } from "node:readline/promises";
 import OpenAI from "openai";
+import { Opik } from "opik";
 import { loadCollection } from "./collection.js";
 import { loadEnv } from "./env.js";
 import { MuseumGuide } from "./guide.js";
@@ -19,12 +20,19 @@ const CONVERSATIONS: Record<string, string[]> = {
   ],
 };
 
-async function runDemo(): Promise<void> {
+const PROJECT = "openai-ts-museum-guide";
+
+// One Opik client for the whole run; projectName decides which project the traces land in.
+function createOpik(): Opik {
+  return new Opik({ projectName: PROJECT });
+}
+
+async function runDemo(opik: Opik): Promise<void> {
   const collection = loadCollection();
   const client = new OpenAI();
   for (const [conversationId, turns] of Object.entries(CONVERSATIONS)) {
     console.log(`\n=== Conversation: ${conversationId} ===`);
-    const guide = new MuseumGuide(conversationId, collection, client);
+    const guide = new MuseumGuide(conversationId, collection, client, opik);
     for (const message of turns) {
       console.log(`\nVisitor: ${message}`);
       const reply = await guide.answer(message);
@@ -34,8 +42,8 @@ async function runDemo(): Promise<void> {
   }
 }
 
-async function runInteractive(): Promise<void> {
-  const guide = new MuseumGuide(`interactive-${Date.now().toString(36)}`, loadCollection(), new OpenAI());
+async function runInteractive(opik: Opik): Promise<void> {
+  const guide = new MuseumGuide(`interactive-${Date.now().toString(36)}`, loadCollection(), new OpenAI(), opik);
   const rl = createInterface({ input: process.stdin, output: process.stdout });
   console.log("Wrenfield visitor guide. Ctrl+C to quit.");
   try {
@@ -48,4 +56,10 @@ async function runInteractive(): Promise<void> {
   }
 }
 
-await (process.argv.includes("--interactive") ? runInteractive() : runDemo());
+const opik = createOpik();
+try {
+  await (process.argv.includes("--interactive") ? runInteractive(opik) : runDemo(opik));
+} finally {
+  // Traces are sent in batches; without flush() the process can exit before the last ones leave.
+  await opik.flush();
+}

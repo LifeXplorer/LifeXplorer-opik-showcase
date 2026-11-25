@@ -1,0 +1,18 @@
+{
+  "garden": "Hollyhock Lane Community Garden, Marrow Valley",
+  "lastFrost": "2026-05-04",
+  "plants": [
+    { "name": "tomato", "sowIndoorsWeeks": -8, "transplantWeeks": 1, "harvestDays": 80, "note": "Harden off for a week before moving outside." },
+    { "name": "pepper", "sowIndoorsWeeks": -10, "transplantWeeks": 2, "harvestDays": 75, "note": "Wait for warm nights; peppers stall below 13C." },
+    { "name": "basil", "sowIndoorsWeeks": -6, "transplantWeeks": 2, "harvestDays": 45, "note": "Pinch the flower buds to keep leaves coming." },
+    { "name": "lettuce", "sowIndoorsWeeks": -4, "transplantWeeks": -2, "harvestDays": 45, "note": "Cool-season crop; sow again every two weeks." },
+    { "name": "peas", "sowIndoorsWeeks": null, "transplantWeeks": -4, "harvestDays": 60, "note": "Direct sow as soon as the soil can be worked." },
+    { "name": "carrot", "sowIndoorsWeeks": null, "transplantWeeks": -2, "harvestDays": 70, "note": "Direct sow only; keep the seedbed damp until they sprout." },
+    { "name": "zucchini", "sowIndoorsWeeks": -3, "transplantWeeks": 1, "harvestDays": 55, "note": "One plant feeds a family; give it a full square metre." },
+    { "name": "cucumber", "sowIndoorsWeeks": -3, "transplantWeeks": 2, "harvestDays": 60, "note": "Trellis it to save space and keep fruit clean." },
+    { "name": "kale", "sowIndoorsWeeks": -6, "transplantWeeks": -3, "harvestDays": 55, "note": "Sweetens after the first autumn frost." },
+    { "name": "garlic", "sowIndoorsWeeks": null, "transplantWeeks": -28, "harvestDays": 270, "note": "Plant cloves in October; harvest when the lower leaves brown." },
+    { "name": "sunflower", "sowIndoorsWeeks": -2, "transplantWeeks": 1, "harvestDays": 100, "note": "Stake the tall varieties against wind." },
+    { "name": "dahlia", "sowIndoorsWeeks": -6, "transplantWeeks": 2, "harvestDays": 90, "note": "Lift the tubers after the first hard frost." }
+  ]
+}

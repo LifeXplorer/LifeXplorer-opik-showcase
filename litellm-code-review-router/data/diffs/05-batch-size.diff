@@ -1,0 +1,15 @@
+--- a/pantry/importer.py
++++ b/pantry/importer.py
+@@ -30,8 +30,14 @@ def import_csv(path: str, client: SyncClient) -> int:
+     rows = list(csv.DictReader(open(path)))
+-    for row in rows:
+-        client.push([Item.from_row(row)])
++    batch: list[Item] = []
++    for row in rows:
++        batch.append(Item.from_row(row))
++        if len(batch) == 100:
++            client.push(batch)
++            batch = []
++    if len(batch) > 0:
++        client.push(batch)
+     return len(rows)

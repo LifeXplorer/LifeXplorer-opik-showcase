@@ -1,0 +1,14 @@
+--- a/pantry/config.py
++++ b/pantry/config.py
+@@ -4,10 +4,10 @@ from dataclasses import dataclass
+ @dataclass
+ class Config:
+-    api_url: str
+-    timeout: int = 30
++    base_url: str
++    timeout_s: float = 30.0
+ 
+ 
+ def load() -> Config:
+-    return Config(api_url=os.environ["PANTRY_API_URL"])
++    return Config(base_url=os.environ["PANTRY_API_URL"])

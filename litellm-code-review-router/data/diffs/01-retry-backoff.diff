@@ -1,0 +1,16 @@
+--- a/pantry/sync/client.py
++++ b/pantry/sync/client.py
+@@ -18,12 +18,18 @@ class SyncClient:
+     def push(self, batch: list[Item]) -> Receipt:
+-        resp = self._session.post(self._url, json=_encode(batch))
+-        resp.raise_for_status()
+-        return Receipt.from_json(resp.json())
++        delay = 0.5
++        for attempt in range(5):
++            resp = self._session.post(self._url, json=_encode(batch))
++            if resp.status_code < 500:
++                resp.raise_for_status()
++                return Receipt.from_json(resp.json())
++            time.sleep(delay)
++            delay *= 2
++        raise SyncError("pantry sync failed after 5 attempts")

@@ -1,0 +1,24 @@
+--- a/pantry/cache.py
++++ b/pantry/cache.py
+@@ -1,20 +1,27 @@
+ import time
+ 
+ _store: dict[str, tuple[float, object]] = {}
++TTL_SECONDS = 300
+ 
+ 
+ def get(key: str):
+     entry = _store.get(key)
+     if entry is None:
+         return None
+-    return entry[1]
++    stored_at, value = entry
++    if time.time() - stored_at > TTL_SECONDS:
++        return None
++    return value
+ 
+ 
+ def put(key: str, value: object) -> None:
+-    _store[key] = (time.time(), value)
++    _store[key] = (time.time(), value)
++    # expired entries are never evicted, only skipped on read

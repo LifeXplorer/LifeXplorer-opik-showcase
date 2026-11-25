@@ -1,0 +1,11 @@
+--- a/pantry/api/search.py
++++ b/pantry/api/search.py
+@@ -9,9 +9,14 @@ router = APIRouter()
+ @router.get("/items/search")
+-def search(q: str, db: Db = Depends(get_db)):
+-    rows = db.execute("SELECT id, name FROM items WHERE name = %s", (q,))
+-    return [dict(r) for r in rows]
++def search(q: str, sort: str = "name", db: Db = Depends(get_db)):
++    query = f"SELECT id, name FROM items WHERE name LIKE '%{q}%' ORDER BY {sort}"
++    rows = db.execute(query)
++    return [dict(r) for r in rows]

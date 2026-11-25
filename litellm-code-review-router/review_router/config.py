@@ -17,4 +17,6 @@ DEFAULT_MODELS = [
     "anthropic/claude-haiku-4-5-20251001",
 ]
 
+PROJECT_NAME = "litellm-code-review-router"
+
 DIFFS_DIR = Path(__file__).resolve().parent.parent / "data" / "diffs"

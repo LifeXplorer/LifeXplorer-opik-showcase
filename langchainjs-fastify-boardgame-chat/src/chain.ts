@@ -44,3 +44,30 @@ export function buildChain(
 ): Runnable<string, string> {
   return RunnableSequence.from([prepareTurn(store, catalog), prompt, llm, new StringOutputParser()]);
 }
+
+/** What the "envelope" variant takes in and hands back. */
+export interface Envelope {
+  message: string;
+  sessionId: string;
+}
+export interface EnvelopeReply {
+  reply: string;
+  sessionId: string;
+}
+
+/**
+ * The same host, but wrapped the way many widget backends are: an object in, an object
+ * out. It exists to be compared with buildChain in Opik's Threads tab, where this root
+ * run's input and output are JSON envelopes instead of sentences.
+ */
+export function buildEnvelopeChain(
+  store: SessionStore,
+  catalog: Game[],
+  llm: BaseLanguageModel
+): Runnable<Envelope, EnvelopeReply> {
+  const unwrap = RunnableLambda.from((env: Envelope) => env.message).withConfig({ runName: "unwrap-envelope" });
+  const wrap = RunnableLambda.from(
+    (reply: string, config?: RunnableConfig): EnvelopeReply => ({ reply, sessionId: sessionIdOf(config) })
+  ).withConfig({ runName: "wrap-envelope" });
+  return RunnableSequence.from([unwrap, prepareTurn(store, catalog), prompt, llm, new StringOutputParser(), wrap]);
+}

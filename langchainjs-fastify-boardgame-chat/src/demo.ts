@@ -20,8 +20,17 @@ const CONVERSATIONS: Record<string, string[]> = {
   ],
 };
 
-async function chat(sessionId: string, message: string): Promise<string> {
-  const response = await fetch(`http://localhost:${PORT}/chat`, {
+// Same kind of guest, but served by the object-in/object-out chain, to compare threads.
+const ENVELOPE_CONVERSATION = {
+  sessionId: "guest-envelope-variant",
+  turns: [
+    "Four of us, we like bluffing games and have about an hour.",
+    "Which of those is quickest to teach?",
+  ],
+};
+
+async function chat(sessionId: string, message: string, route = "/chat"): Promise<string> {
+  const response = await fetch(`http://localhost:${PORT}${route}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ sessionId, message }),
@@ -40,6 +49,12 @@ async function main() {
       console.log(`Host:  ${await chat(sessionId, message)}`);
     }
   }
+  console.log(`\n=== Session: ${ENVELOPE_CONVERSATION.sessionId} (envelope chain) ===`);
+  for (const message of ENVELOPE_CONVERSATION.turns) {
+    console.log(`\nGuest: ${message}`);
+    console.log(`Host:  ${await chat(ENVELOPE_CONVERSATION.sessionId, message, "/chat-envelope")}`);
+  }
+
   await flushTraces();
   await app.close();
   console.log(`\nDone. Open the "${PROJECT_NAME}" project in Opik and look at the Threads tab.`);

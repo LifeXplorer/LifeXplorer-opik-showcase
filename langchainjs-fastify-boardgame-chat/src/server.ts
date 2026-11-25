@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import dotenv from "dotenv";
 import { ChatOpenAI } from "@langchain/openai";
 import { buildApp } from "./app.js";
-import { buildChain } from "./chain.js";
+import { buildChain, buildEnvelopeChain } from "./chain.js";
 import { loadCatalog } from "./catalog.js";
 import { SessionStore } from "./sessions.js";
 import { flushTraces, handlerFor } from "./tracing.js";
@@ -16,8 +16,10 @@ dotenv.config({ path: path.join(here, "../../.env"), quiet: true });
 export function createRuntime() {
   const store = new SessionStore();
   const llm = new ChatOpenAI({ model: "gpt-4o-mini", temperature: 0.3 });
-  const chain = buildChain(store, loadCatalog(), llm);
-  return { app: buildApp({ store, chain, callbacksFor: (id) => [handlerFor(id)] }), store };
+  const catalog = loadCatalog();
+  const chain = buildChain(store, catalog, llm);
+  const envelopeChain = buildEnvelopeChain(store, catalog, llm);
+  return { app: buildApp({ store, chain, envelopeChain, callbacksFor: (id) => [handlerFor(id)] }), store };
 }
 
 const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);

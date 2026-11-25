@@ -1,0 +1,15 @@
+[project]
+name = "langgraph-stargazing-rag"
+version = "0.1.0"
+description = "Two-node LangGraph RAG over a fictional amateur-astronomy club handbook."
+requires-python = ">=3.12"
+dependencies = [
+    "langchain-core>=0.3",
+    "langchain-openai>=0.3",
+    "langgraph>=0.4",
+    "numpy>=2",
+    "python-dotenv>=1.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]

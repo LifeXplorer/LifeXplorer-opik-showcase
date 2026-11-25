@@ -51,3 +51,21 @@ def test_scores_land_on_the_newest_matching_trace():
     scores = build_scores(ids, {q1: [], q2: ["missing 'Dune Pacers'"]})
     assert [(s["id"], s["name"], s["value"]) for s in scores] == [("new", SCORE_NAME, 1.0), ("two", SCORE_NAME, 0.0)]
     assert "Dune Pacers" in scores[1]["reason"]
+
+
+def test_provider_tagger_marks_only_model_call_spans():
+    from tracing import ProviderTagger
+
+    class FakeSpan:
+        def __init__(self, name):
+            self.name, self.attributes = name, {}
+
+        def set_attribute(self, key, value):
+            self.attributes[key] = value
+
+    tagger = ProviderTagger("openai")
+    model_span, step_span = FakeSpan("OpenAIModel.generate"), FakeSpan("Step 1")
+    tagger.on_start(model_span)
+    tagger.on_start(step_span)
+    assert model_span.attributes == {"gen_ai.system": "openai"}
+    assert step_span.attributes == {}

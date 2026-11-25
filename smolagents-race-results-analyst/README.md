@@ -40,19 +40,28 @@ Open the 0.0 trace (the "highest percentage of finishers who ran a negative spli
 `FinalAnswerTool` call. Two kinds of span carry the evidence:
 
 - **`OpenAIModel.generate`** (type `llm`): its output is the model's `Thought:` followed by the
-  `<code>` block it wants to run. In the second call you can read
-  `data['half_split_seconds'] < (data['chip_time_seconds'] / 2)`. That says "first half shorter than
+  `<code>` block it wants to run. In the verified run you can read
+  `finishers['half_split'] < (finishers['chip_time'] / 2)`. That says "first half shorter than
   half the total", which is a *positive* split; a negative split is the opposite. The code is
   tidy, runs cleanly and answers a different question than the one asked.
 - **`Step 1`, `Step 2`, ...** (type `general`): the output is the execution log, the text the
-  local executor captured. The second step's log reads "...Harbour Striders with 92.3%." That is the
+  local executor captured. In that run `Step 1` is marked as failed: its error is
+  `Code parsing failed on line 33 ... SyntaxError: unterminated string literal` (the model typed
+  `print(fClub ...`), and `Step 2` is the retry. Its log reads "Club with highest percentage:
+  Harbour Striders, Percentage: 92.3%". That is the
   share of runners who went out *faster* than they came home, which is why a club of ordinary
   runners looks "best" and Dune Pacers (66.7% real negative splits) is never mentioned.
 
-The other two traces show what a healthy run looks like: the winner question finishes in two steps
-and the DNF question in a single one, and in both the generated code and the `Step` log agree with
-the grader. Each `OpenAIModel.generate` span also carries `gpt-4o-mini` as its model and its own
-token counts (3,247, 2,431 and 3,845 total tokens for the three calls in the club trace).
+The other two traces show what a healthy run looks like: each finishes in two steps, and the
+generated code and the `Step` log agree with the grader. Which question goes wrong is stable, but
+the surrounding detail is not: across the runs made while building this, the club question was
+wrong every time, once with "No clubs have finishers with a negative split", and a syntax-error
+retry like the one above showed up only in some runs.
+
+Each `OpenAIModel.generate` span carries `gpt-4o-mini` as its model, `openai` as its provider, its
+own token counts and a cost. In the club trace the three calls used 2,707, 4,277 and 3,700 tokens
+and cost $0.00065, $0.00068 and $0.00076, so the trace shows $0.0021; the whole run costs about
+$0.004.
 
 ## Run it yourself
 
@@ -60,7 +69,7 @@ token counts (3,247, 2,431 and 3,845 total tokens for the three calls in the clu
 2. Start Opik. This example expects a local instance at `http://localhost:5173`; for Opik Cloud set
    `OPIK_URL=https://www.comet.com/opik/api`, `OPIK_API_KEY` and `OPIK_WORKSPACE` in `.env`.
 3. `uv sync`
-4. `uv run main.py` (about 40 seconds and well under a cent of `gpt-4o-mini`, roughly 17k tokens).
+4. `uv run main.py` (about 45 seconds and roughly $0.004 of `gpt-4o-mini`).
 5. Open the project and compare the three traces as described above.
 6. Offline tests, no keys and no Opik needed:
    `env -u OPENAI_API_KEY OPIK_TRACK_DISABLE=true uv run pytest`
@@ -81,8 +90,22 @@ without exporting anything (it then skips the feedback step).
 
 ## Gotchas we hit
 
+**The model-call spans show `cost: null`.** OpenInference reports the model name (`gpt-4o-mini`) but
+no provider, and Opik prices a span only when it has both. `tracing.py` adds a small span processor
+that stamps `gen_ai.system="openai"` on the `*.generate` spans as they start; Opik reads that as the
+span's provider and fills in the cost:
+
+```python
+class ProviderTagger(SpanProcessor):
+    def on_start(self, span, parent_context=None):
+        if span.name.endswith(".generate"):
+            span.set_attribute("gen_ai.system", "openai")
+
+provider.add_span_processor(ProviderTagger("openai"))  # before the exporter's processor
+```
+
 **The trace's token total is twice what the model calls add up to.** In the club trace the trace-level
-usage says 19,046 total tokens while the three `OpenAIModel.generate` spans sum to 9,523.
+usage says 21,368 total tokens while the three `OpenAIModel.generate` spans sum to 10,684.
 OpenInference puts the accumulated token count on the `CodeAgent.run` agent span as well, and Opik
 types that span `llm`, so it is counted again. Sum the per-call spans when you need the real number:
 
@@ -99,12 +122,12 @@ suffix instead, as `feedback.py` does:
 ## How it's put together
 
 - `main.py`: the briefing, the three questions, the `CodeAgent`, grading and the run loop.
-- `tracing.py`: OTLP exporter plus `SmolagentsInstrumentor`; routes traces to the project named in the `projectName` header.
+- `tracing.py`: OTLP exporter, `SmolagentsInstrumentor` and the `ProviderTagger` that makes model calls priceable; routes traces to the project named in the `projectName` header.
 - `feedback.py`: finds each question's trace and logs the `matches_ground_truth` score.
 - `analysis.py`: stdlib ground truth and the `check_answer` grader.
 - `data/saltmarsh_2025.csv`: 240 fictional runners; `data/generate_results.py` regenerates it from a fixed seed.
 - `tests/test_analysis.py`: the planted facts, the DNF/small-club rules, the grader.
-- `tests/test_agent.py`: the real `CodeAgent` on a stub model with tracing disabled, plus the trace-matching and score logic.
+- `tests/test_agent.py`: the real `CodeAgent` on a stub model with tracing disabled, plus the provider tagger, trace-matching and score logic.
 
 ---
 

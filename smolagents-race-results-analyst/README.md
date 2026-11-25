@@ -1,3 +1,111 @@
 # smolagents-race-results-analyst
 
-A smolagents CodeAgent that answers questions about a fictional marathon results CSV. Run: `uv run main.py`.
+![Python](https://img.shields.io/badge/python-3.12%2B-3776AB?style=flat&logo=python&logoColor=white)
+![smolagents](https://img.shields.io/badge/smolagents-1.26-FFD21E?style=flat)
+![Opik](https://img.shields.io/badge/Opik-2.3.4-2f54eb?style=flat)
+
+*A marathon-results analyst that answers by writing pandas, and a trace that lets you read the pandas it wrote.*
+
+Ask a code-writing agent "which club runs the best negative splits?" and you get a sentence with a
+percentage in it. Nothing in that sentence tells you whether the percentage came from the right
+comparison. This example makes the problem concrete: one of its three questions is answered
+confidently and wrongly on every run, and the only place the mistake is visible is in the code the
+model generated. Opik is where you read that code.
+
+## What you'll build
+
+A smolagents `CodeAgent` on `gpt-4o-mini` with a single capability: running Python with `pandas`
+available. It reads `data/saltmarsh_2025.csv`, 240 fictional starters in the Saltmarsh Coastal
+Marathon (bib, runner, gender, age group, club, half-way split, chip time as `H:MM:SS` text, and a
+FIN/DNF status). The file has three planted facts:
+
+- one clear winner in the women's 40-44 group (Odile Fenwick, 3:04:18),
+- one club, Dune Pacers, where two thirds of finishers ran a negative split (other clubs sit at 8-14%),
+- one age group, 60+, with a DNF rate of 23.5% (the others are 0-6%).
+
+`analysis.py` recomputes all three with the standard library, no pandas and no model, so every
+answer can be graded. After the three questions run, `main.py` writes the verdict back onto each
+Opik trace as a `matches_ground_truth` feedback score. Tracing is OpenInference's
+`SmolagentsInstrumentor` exporting over OTLP to Opik; there are no decorators in the agent code.
+
+## See it in Opik
+
+Open the `smolagents-race-results-analyst` project (local Opik: http://localhost:5173, workspace
+`default`). You get three traces, one per question, each rooted at `CodeAgent.run`, and a
+`matches_ground_truth` column in the traces table: 1.0 for the winner question, 0.0 for the club
+question, 1.0 for the DNF question.
+
+Open the 0.0 trace (the "highest percentage of finishers who ran a negative split" one). It has
+8 spans: the `CodeAgent.run` root, three `OpenAIModel.generate` calls, three `Step` spans and a
+`FinalAnswerTool` call. Two kinds of span carry the evidence:
+
+- **`OpenAIModel.generate`** (type `llm`): its output is the model's `Thought:` followed by the
+  `<code>` block it wants to run. In the second call you can read
+  `data['half_split_seconds'] < (data['chip_time_seconds'] / 2)`. That says "first half shorter than
+  half the total", which is a *positive* split; a negative split is the opposite. The code is
+  tidy, runs cleanly and answers a different question than the one asked.
+- **`Step 1`, `Step 2`, ...** (type `general`): the output is the execution log, the text the
+  local executor captured. The second step's log reads "...Harbour Striders with 92.3%." That is the
+  share of runners who went out *faster* than they came home, which is why a club of ordinary
+  runners looks "best" and Dune Pacers (66.7% real negative splits) is never mentioned.
+
+The other two traces show what a healthy run looks like: the winner question finishes in two steps
+and the DNF question in a single one, and in both the generated code and the `Step` log agree with
+the grader. Each `OpenAIModel.generate` span also carries `gpt-4o-mini` as its model and its own
+token counts (3,247, 2,431 and 3,845 total tokens for the three calls in the club trace).
+
+## Run it yourself
+
+1. Put `OPENAI_API_KEY` in a `.env` (copy `.env.example`), or in a `.env` one directory up.
+2. Start Opik. This example expects a local instance at `http://localhost:5173`; for Opik Cloud set
+   `OPIK_URL=https://www.comet.com/opik/api`, `OPIK_API_KEY` and `OPIK_WORKSPACE` in `.env`.
+3. `uv sync`
+4. `uv run main.py` (about 40 seconds and well under a cent of `gpt-4o-mini`, roughly 17k tokens).
+5. Open the project and compare the three traces as described above.
+6. Offline tests, no keys and no Opik needed:
+   `env -u OPENAI_API_KEY OPIK_TRACK_DISABLE=true uv run pytest`
+
+`OPIK_TRACK_DISABLE=true` turns the OTLP exporter off in `tracing.py` too, so the app itself runs
+without exporting anything (it then skips the feedback step).
+
+## Poke around
+
+- Rephrase question 2 ("negative split" -> "ran the second half faster than the first") and see
+  whether the generated comparison flips. The trace shows which wording the model actually coded.
+- Add the missing column hint to `BRIEFING` ("negative split means `chip_time - half_split <
+  half_split`") and re-run. Does the club answer become Dune Pacers?
+- Remove `"pandas"` from `additional_authorized_imports` and run again; look at what the `Step`
+  spans report when the generated code can no longer import its main tool.
+- Plant your own finding in `data/saltmarsh_2025.csv` (for example make a second club negative-split)
+  and add its expected answer to `expected_answers` in `analysis.py`.
+
+## Gotchas we hit
+
+**The trace's token total is twice what the model calls add up to.** In the club trace the trace-level
+usage says 19,046 total tokens while the three `OpenAIModel.generate` spans sum to 9,523.
+OpenInference puts the accumulated token count on the `CodeAgent.run` agent span as well, and Opik
+types that span `llm`, so it is counted again. Sum the per-call spans when you need the real number:
+
+```python
+calls = [s for s in client.search_spans(project_name=P, trace_id=t.id) if s.name == "OpenAIModel.generate"]
+tokens = sum(s.usage["total"] for s in calls)
+```
+
+**`400 Invalid value '...+00:00' ... for field 'start_time'`** when filtering traces by time. A
+timezone offset written as `+00:00` loses its `+` on the way and Opik rejects the date. Use a `Z`
+suffix instead, as `feedback.py` does:
+`started.astimezone(UTC).strftime("%Y-%m-%dT%H:%M:%S.%fZ")`.
+
+## How it's put together
+
+- `main.py`: the briefing, the three questions, the `CodeAgent`, grading and the run loop.
+- `tracing.py`: OTLP exporter plus `SmolagentsInstrumentor`; routes traces to the project named in the `projectName` header.
+- `feedback.py`: finds each question's trace and logs the `matches_ground_truth` score.
+- `analysis.py`: stdlib ground truth and the `check_answer` grader.
+- `data/saltmarsh_2025.csv`: 240 fictional runners; `data/generate_results.py` regenerates it from a fixed seed.
+- `tests/test_analysis.py`: the planted facts, the DNF/small-club rules, the grader.
+- `tests/test_agent.py`: the real `CodeAgent` on a stub model with tracing disabled, plus the trace-matching and score logic.
+
+---
+
+*built with Opik · inspired by Opik's examples and documentation*

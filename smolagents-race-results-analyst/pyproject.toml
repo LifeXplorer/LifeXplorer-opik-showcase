@@ -5,6 +5,7 @@ description = "smolagents CodeAgent that answers questions about a marathon resu
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "opik==2.3.4",
     "openinference-instrumentation-smolagents>=0.1.53",
     "opentelemetry-exporter-otlp>=1.45.2",
     "opentelemetry-sdk>=1.45.2",

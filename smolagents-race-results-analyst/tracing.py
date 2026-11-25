@@ -8,7 +8,10 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 
 
-def setup_tracing(project_name: str) -> TracerProvider:
+def setup_tracing(project_name: str) -> TracerProvider | None:
+    # Same switch the Opik SDK honours; lets tests and dry runs skip the exporter entirely.
+    if os.getenv("OPIK_TRACK_DISABLE", "").lower() == "true":
+        return None
     base = (os.getenv("OPIK_URL_OVERRIDE") or os.getenv("OPIK_URL") or "http://localhost:5173/api").rstrip("/")
     # Opik's OTLP ingest endpoint; the projectName header decides which Opik project the
     # traces land in (without it they go to "Default Project").

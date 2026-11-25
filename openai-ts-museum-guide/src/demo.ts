@@ -3,6 +3,7 @@ import OpenAI from "openai";
 import { Opik } from "opik";
 import { loadCollection } from "./collection.js";
 import { loadEnv } from "./env.js";
+import { logVisitorRating, type VisitorRating } from "./feedback.js";
 import { MuseumGuide } from "./guide.js";
 
 loadEnv();
@@ -27,19 +28,38 @@ function createOpik(): Opik {
   return new Opik({ projectName: PROJECT });
 }
 
+// Simulated visitors rating the last answer of each conversation; logged as Opik feedback scores after the run.
+const RATINGS: Record<string, VisitorRating> = {
+  "family-visit": { value: 1, reason: "Visitor tapped thumbs-up on the ticket-price answer." },
+  "accessibility-question": {
+    value: 0,
+    reason: "Visitor marked the answer unhelpful in the end-of-visit survey.",
+  },
+};
+
 async function runDemo(opik: Opik): Promise<void> {
   const collection = loadCollection();
   const client = new OpenAI();
+  const lastTraceIds = new Map<string, string>();
   for (const [conversationId, turns] of Object.entries(CONVERSATIONS)) {
     console.log(`\n=== Conversation: ${conversationId} ===`);
     const guide = new MuseumGuide(conversationId, collection, client, opik);
     for (const message of turns) {
       console.log(`\nVisitor: ${message}`);
       const reply = await guide.answer(message);
+      lastTraceIds.set(conversationId, reply.traceId);
       console.log(`Guide:   ${reply.text}`);
       console.log(`         (${reply.promptTokens} prompt + ${reply.completionTokens} completion tokens)`);
     }
   }
+
+  for (const [conversationId, traceId] of lastTraceIds) {
+    const rating = RATINGS[conversationId];
+    if (!rating) continue;
+    await logVisitorRating(opik, traceId, rating);
+    console.log(`\nLogged visitor-rating=${rating.value} on the last turn of ${conversationId}`);
+  }
+  console.log(`\nOpen the "${PROJECT}" project in Opik: Logs for traces, Threads for conversations.`);
 }
 
 async function runInteractive(opik: Opik): Promise<void> {

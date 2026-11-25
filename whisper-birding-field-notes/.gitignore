@@ -1,0 +1,10 @@
+__pycache__/
+*.py[oc]
+.venv
+.pytest_cache/
+uv.lock
+.env
+# generated at run time
+audio/
+out/
+opik_test_suite_reports/

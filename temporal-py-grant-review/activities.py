@@ -47,6 +47,8 @@ async def chat(name: str, system: str, user: str, *, json_mode: bool = False) ->
                 "gen_ai.usage.output_tokens": usage.completion_tokens,
                 "input.value": json.dumps({"messages": messages}),  # shown as the span input
                 "output.value": content,  # shown as the span output
+                # opik.metadata (JSON) is merged into the span metadata; other unmapped attributes would land in the input
+                "opik.metadata": json.dumps({"process": "worker", "pid": os.getpid()}),
             }
         )
         span.set_status(Status(StatusCode.OK))

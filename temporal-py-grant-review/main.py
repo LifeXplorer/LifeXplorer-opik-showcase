@@ -47,6 +47,8 @@ async def review(client: Client, application: Application) -> ReviewResult:
     # Root span of the trace, covering start-to-result from the client's side. The interceptor's
     # StartWorkflow span nests under it and the worker's spans nest under that: one Opik trace.
     with trace.get_tracer("grant-client").start_as_current_span(f"review:{application.application_id}") as span:
+        # opik.metadata (JSON) becomes the span metadata: the client's pid, to compare with the worker's
+        span.set_attribute("opik.metadata", json.dumps({"process": "client", "pid": os.getpid()}))
         span.set_attribute("input.value", json.dumps(asdict(application)))  # trace input in Opik
         handle = await client.start_workflow(
             GrantReview.run, application, id=application.application_id, task_queue=TASK_QUEUE

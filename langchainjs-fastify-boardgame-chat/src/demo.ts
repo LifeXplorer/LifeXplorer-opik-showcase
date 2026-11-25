@@ -3,6 +3,7 @@
  * prints the replies, and exits.
  */
 import { createRuntime } from "./server.js";
+import { flushTraces, PROJECT_NAME } from "./tracing.js";
 
 const PORT = Number(process.env.PORT ?? 3456);
 
@@ -39,7 +40,9 @@ async function main() {
       console.log(`Host:  ${await chat(sessionId, message)}`);
     }
   }
+  await flushTraces();
   await app.close();
+  console.log(`\nDone. Open the "${PROJECT_NAME}" project in Opik and look at the Threads tab.`);
 }
 
 main().catch((error) => {

@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import Fastify from "fastify";
 import type { FastifyInstance } from "fastify";
 import type { Runnable } from "@langchain/core/runnables";
+import type { Callbacks } from "@langchain/core/callbacks/manager";
 import type { SessionStore } from "./sessions.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -11,10 +12,12 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 export interface AppDeps {
   store: SessionStore;
   chain: Runnable<string, string>;
+  /** Optional per-session callbacks (the Opik handler in the real server). */
+  callbacksFor?: (sessionId: string) => Callbacks;
 }
 
 /** Build the Fastify app. Dependencies are injected so tests can stub the model. */
-export function buildApp({ store, chain }: AppDeps): FastifyInstance {
+export function buildApp({ store, chain, callbacksFor }: AppDeps): FastifyInstance {
   const app = Fastify();
   const widget = readFileSync(path.join(here, "../public/index.html"), "utf8");
 
@@ -28,6 +31,7 @@ export function buildApp({ store, chain }: AppDeps): FastifyInstance {
     try {
       const answer = await chain.invoke(message, {
         runName: "cafe-widget-turn",
+        callbacks: callbacksFor?.(sessionId),
         configurable: { sessionId },
       });
       store.record(sessionId, message, answer);

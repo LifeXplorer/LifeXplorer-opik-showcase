@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Meeple &amp; Brew</title>
+  <style>
+    :root { --bg:#f6efe4; --card:#fffaf2; --accent:#a4492b; --host:#efe3d0; --text:#2c2118; }
+    * { box-sizing: border-box; }
+    body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+      background:var(--bg); font-family: Georgia, serif; color:var(--text); padding:16px; }
+    .widget { width:100%; max-width:420px; height:600px; max-height:90vh; background:var(--card);
+      border-radius:14px; box-shadow:0 10px 40px rgba(44,33,24,.2); display:flex; flex-direction:column; overflow:hidden; }
+    header { background:var(--accent); color:#fff; padding:14px 18px; }
+    header h1 { margin:0; font-size:17px; } header p { margin:2px 0 0; font-size:12px; opacity:.85; }
+    #messages { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px; }
+    .msg { max-width:82%; padding:9px 13px; border-radius:12px; font-size:14px; line-height:1.45; white-space:pre-wrap; }
+    .guest { align-self:flex-end; background:var(--accent); color:#fff; }
+    .host { align-self:flex-start; background:var(--host); }
+    form { display:flex; gap:8px; padding:12px; border-top:1px solid #e6d8c2; }
+    input { flex:1; border:1px solid #d9c8ad; border-radius:8px; padding:10px 12px; font-size:14px; }
+    button { background:var(--accent); color:#fff; border:0; border-radius:8px; padding:0 16px; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <div class="widget">
+    <header><h1>Meeple &amp; Brew</h1><p>Tell us who is coming and we'll pick a game.</p></header>
+    <div id="messages"><div class="msg host">Hi! How many of you are there, and what kind of evening are you after?</div></div>
+    <form id="form"><input id="input" placeholder="We're four, new to board games..." autocomplete="off" /><button>Send</button></form>
+  </div>
+  <script>
+    // One sessionId per browser tab: the server keys conversation memory on it.
+    const sessionId = "guest-" + Math.random().toString(36).slice(2, 10);
+    const messages = document.getElementById("messages");
+    const input = document.getElementById("input");
+    function add(text, cls) {
+      const el = document.createElement("div");
+      el.className = "msg " + cls; el.textContent = text;
+      messages.appendChild(el); messages.scrollTop = messages.scrollHeight;
+    }
+    document.getElementById("form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const message = input.value.trim(); if (!message) return;
+      input.value = ""; add(message, "guest");
+      try {
+        const res = await fetch("/chat", { method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message, sessionId }) });
+        const data = await res.json();
+        add(res.ok ? data.reply : data.error, "host");
+      } catch { add("Connection problem, please try again.", "host"); }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import dotenv from "dotenv";
+import { ChatOpenAI } from "@langchain/openai";
+import { buildApp } from "./app.js";
+import { buildChain } from "./chain.js";
+import { loadCatalog } from "./catalog.js";
+import { SessionStore } from "./sessions.js";
+
+const here = path.dirname(fileURLToPath(import.meta.url));
+// This folder's .env first, then the nearest ancestor .env; existing values win.
+dotenv.config({ path: path.join(here, "../.env"), quiet: true });
+dotenv.config({ path: path.join(here, "../../.env"), quiet: true });
+
+export function createRuntime() {
+  const store = new SessionStore();
+  const llm = new ChatOpenAI({ model: "gpt-4o-mini", temperature: 0.3 });
+  const chain = buildChain(store, loadCatalog(), llm);
+  return { app: buildApp({ store, chain }), store };
+}
+
+const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (isMain) {
+  const { app } = createRuntime();
+  const port = Number(process.env.PORT ?? 3000);
+  await app.listen({ port });
+  console.log(`Meeple & Brew widget: http://localhost:${port}`);
+}

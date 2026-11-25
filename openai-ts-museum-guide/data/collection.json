@@ -1,0 +1,55 @@
+{
+  "museum": "The Wrenfield Museum of Clocks & Curiosities",
+  "hours": "Open Tuesday to Sunday, 10:00 to 17:00. Closed Mondays. Last entry 16:15.",
+  "tickets": "Adults 14 GBP, students 8 GBP, under-12s free. The Tower Tour costs an extra 5 GBP and runs at 11:00 and 15:00.",
+  "exhibits": [
+    {
+      "id": "pendulum-hall-orrery",
+      "room": "Pendulum Hall",
+      "title": "The Marlow Orrery",
+      "year": 1783,
+      "summary": "A brass planetary model built by clockmaker Edith Marlow. Six planets orbit a gilded sun, driven by a weight-and-chain clock movement that needs winding every Thursday at 14:00.",
+      "keywords": ["orrery", "planet", "planets", "brass", "marlow", "edith", "winding", "sun"]
+    },
+    {
+      "id": "pendulum-hall-longcase",
+      "room": "Pendulum Hall",
+      "title": "The Hollis Longcase Clock",
+      "year": 1741,
+      "summary": "A walnut longcase clock that lost only four seconds a month, which was remarkable for its day. Its pendulum is a steel rod with a lead bob, visible through the glass door.",
+      "keywords": ["longcase", "grandfather", "walnut", "hollis", "pendulum", "accurate", "seconds"]
+    },
+    {
+      "id": "tinker-room-cuckoo",
+      "room": "Tinker's Room",
+      "title": "The Seventeen-Bird Cuckoo",
+      "year": 1902,
+      "summary": "An absurdly overbuilt cuckoo clock with seventeen carved birds. On the hour every bird emerges in sequence; the full performance takes ninety seconds. Children are invited to count the birds.",
+      "keywords": ["cuckoo", "birds", "bird", "carved", "hour", "performance", "children", "kids"]
+    },
+    {
+      "id": "tinker-room-watchbench",
+      "room": "Tinker's Room",
+      "title": "The Watchmaker's Bench",
+      "year": 1925,
+      "summary": "A preserved workbench with loupes, tweezers and a half-repaired pocket watch. A volunteer demonstrates hairspring repair on Saturdays at 12:30.",
+      "keywords": ["watchmaker", "bench", "workbench", "hairspring", "repair", "volunteer", "watch", "saturday"]
+    },
+    {
+      "id": "tower-bellframe",
+      "room": "Clock Tower",
+      "title": "The Bellframe and Great Bell",
+      "year": 1868,
+      "summary": "The tower's 212-step climb ends at a cast-iron bellframe holding the 1.4-tonne Great Bell. It is reachable only by the Tower Tour. The tour is not suitable for visitors who cannot manage stairs; a live camera feed of the bellframe is shown in the cafe.",
+      "keywords": ["tower", "bell", "bellframe", "stairs", "steps", "climb", "tour", "view", "accessible", "wheelchair"]
+    },
+    {
+      "id": "cafe-sundial",
+      "room": "Garden Cafe",
+      "title": "The Garden Sundial",
+      "year": 1699,
+      "summary": "A stone sundial in the cafe garden, accurate to about ten minutes on a sunny day. The cafe serves lunch from 11:30 and is step-free from the main entrance.",
+      "keywords": ["sundial", "garden", "cafe", "lunch", "food", "stone", "sun", "accessible", "step-free"]
+    }
+  ]
+}

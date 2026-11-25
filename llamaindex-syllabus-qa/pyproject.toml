@@ -1,0 +1,18 @@
+[project]
+name = "llamaindex-syllabus-qa"
+version = "0.1.0"
+description = "Question answering over course-syllabus PDFs with LlamaIndex"
+requires-python = ">=3.12"
+dependencies = [
+    "llama-index>=0.14.25",
+    "llama-index-readers-file>=0.7.0",
+    "python-dotenv>=1.2.4",
+    "reportlab>=5.0.1",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

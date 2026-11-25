@@ -1,0 +1,18 @@
+[project]
+name = "temporal-py-grant-review"
+version = "0.1.0"
+description = "A durable community-grant review workflow on Temporal (Python) with OpenAI, traced into one Opik trace across the client and worker processes"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "openai>=1.60",
+    "python-dotenv>=1.0",
+    "temporalio>=1.9",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

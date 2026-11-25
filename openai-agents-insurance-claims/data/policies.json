@@ -1,0 +1,10 @@
+[
+  {"policy_id": "POL-1001", "holder": "Marta Okonkwo", "kind": "auto",
+   "deductible_usd": 500, "coverage_limit_usd": 20000, "active": true},
+  {"policy_id": "POL-2002", "holder": "Daniel Reyes", "kind": "home",
+   "deductible_usd": 1000, "coverage_limit_usd": 150000, "active": true},
+  {"policy_id": "POL-3003", "holder": "Priya Lindqvist", "kind": "auto",
+   "deductible_usd": 250, "coverage_limit_usd": 8000, "active": false},
+  {"policy_id": "POL-4004", "holder": "Tomas Brandt", "kind": "home",
+   "deductible_usd": 750, "coverage_limit_usd": 60000, "active": true}
+]

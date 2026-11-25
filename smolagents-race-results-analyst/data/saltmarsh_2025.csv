@@ -1,0 +1,241 @@
+bib,runner,gender,age_group,club,half_split,chip_time,status
+101,Tove Alder,F,45-49,Lighthouse Joggers,2:03:47,4:15:14,FIN
+102,Hana Dunmore,F,18-34,Gull Road Runners,2:14:36,4:37:33,FIN
+103,Lucia Alder,F,45-49,Gull Road Runners,2:03:02,4:13:42,FIN
+104,Lukas Dunmore,M,35-39,Harbour Striders,1:25:19,2:55:55,FIN
+105,Tove Lindqvist,F,40-44,Harbour Striders,2:23:45,4:56:25,FIN
+106,Noor Oakes,F,50-59,Tidewater TC,2:22:11,4:53:11,FIN
+107,Lukas Nyberg,M,45-49,Unattached,1:53:08,3:53:16,FIN
+108,Noor Jessop,F,35-39,Dune Pacers,2:01:47,3:56:30,FIN
+109,Idris Eskild,M,18-34,Harbour Striders,1:51:31,3:49:57,FIN
+110,Sela Eskild,F,18-34,Unattached,1:57:39,4:02:36,FIN
+111,Lukas Alder,M,40-44,Tidewater TC,1:44:27,3:35:22,FIN
+112,Greta Eskild,F,18-34,Unattached,2:05:34,,DNF
+113,Rafael Holm,M,18-34,Gull Road Runners,1:55:17,3:57:43,FIN
+114,Anders Holm,M,45-49,Gull Road Runners,1:52:53,3:52:45,FIN
+115,Tove Holm,F,18-34,Dune Pacers,2:08:24,4:09:20,FIN
+116,Ayla Lindqvist,F,18-34,Tidewater TC,1:56:53,4:01:01,FIN
+117,Kasper Oakes,M,60+,Gull Road Runners,1:53:34,3:54:11,FIN
+118,Tove Ivers,F,60+,Dune Pacers,2:04:29,4:16:40,FIN
+119,Ayla Corvell,F,40-44,Gull Road Runners,2:17:34,4:43:39,FIN
+120,Britta Kerrigan,F,60+,Harbour Striders,2:21:26,,DNF
+121,Soren Brandt,M,40-44,Gull Road Runners,1:51:24,3:49:43,FIN
+122,Dario Alder,M,45-49,Gull Road Runners,1:49:32,3:45:51,FIN
+123,Pavel Dunmore,M,40-44,Unattached,2:11:02,4:30:12,FIN
+124,Ines Dunmore,F,60+,Tidewater TC,1:55:51,3:58:54,FIN
+125,Emil Ivers,M,40-44,Tidewater TC,2:14:46,4:37:54,FIN
+126,Odile Dunmore,F,40-44,Lighthouse Joggers,2:22:39,4:54:09,FIN
+127,Dario Jessop,M,18-34,Dune Pacers,2:01:16,3:55:29,FIN
+128,Tobias Fenwick,M,35-39,Lighthouse Joggers,1:55:20,3:57:50,FIN
+129,Rafael Eskild,M,40-44,Unattached,2:13:01,4:34:16,FIN
+130,Joren Holm,M,35-39,Gull Road Runners,2:16:36,4:41:40,FIN
+131,Rafael Dunmore,M,45-49,Tidewater TC,1:53:18,3:53:38,FIN
+132,Ayla Garrow,F,35-39,Unattached,1:47:18,3:41:15,FIN
+133,Odile Marlow,F,35-39,Lighthouse Joggers,2:33:44,5:16:59,FIN
+134,Maren Eskild,F,18-34,Unattached,2:07:04,4:22:01,FIN
+135,Ines Brandt,F,18-34,Gull Road Runners,2:11:12,4:30:32,FIN
+136,Britta Lindqvist,F,45-49,Gull Road Runners,2:28:56,5:07:05,FIN
+137,Dario Garrow,M,40-44,Gull Road Runners,1:52:41,3:52:22,FIN
+138,Hana Brandt,F,40-44,Tidewater TC,2:02:56,4:13:30,FIN
+139,Priya Jessop,F,40-44,Harbour Striders,2:15:23,4:39:10,FIN
+140,Soren Dunmore,M,35-39,Dune Pacers,2:01:38,3:56:12,FIN
+141,Dario Fenwick,M,18-34,Harbour Striders,2:16:10,4:40:46,FIN
+142,Maren Ivers,F,40-44,Unattached,2:05:19,4:03:20,FIN
+143,Kasper Kerrigan,M,45-49,Unattached,2:02:58,4:13:34,FIN
+144,Sela Brandt,F,45-49,Gull Road Runners,2:12:47,4:33:48,FIN
+145,Soren Kerrigan,M,50-59,Unattached,2:12:02,4:32:15,FIN
+146,Tobias Jessop,M,45-49,Dune Pacers,1:57:24,4:02:04,FIN
+147,Priya Fenwick,F,18-34,Gull Road Runners,2:06:00,4:19:48,FIN
+148,Rafael Garrow,M,45-49,Gull Road Runners,1:49:17,3:45:20,FIN
+149,Tove Jessop,F,35-39,Unattached,2:11:29,4:31:07,FIN
+150,Kasper Fenwick,M,40-44,Tidewater TC,2:04:37,4:16:58,FIN
+151,Lucia Oakes,F,35-39,Tidewater TC,1:53:33,3:54:08,FIN
+152,Soren Garrow,M,50-59,Gull Road Runners,2:09:52,4:27:47,FIN
+153,Maren Garrow,F,50-59,Tidewater TC,2:12:02,4:16:24,FIN
+154,Dario Oakes,M,50-59,Tidewater TC,2:42:50,5:16:12,FIN
+155,Mateo Lindqvist,M,40-44,Gull Road Runners,1:54:41,3:56:29,FIN
+156,Noor Lindqvist,F,45-49,Lighthouse Joggers,2:14:46,4:37:54,FIN
+157,Maren Marlow,F,50-59,Unattached,2:24:08,4:57:11,FIN
+158,Soren Nyberg,M,40-44,Lighthouse Joggers,2:07:29,4:22:53,FIN
+159,Odile Holm,F,50-59,Dune Pacers,1:50:23,3:34:21,FIN
+160,Ines Ivers,F,18-34,Gull Road Runners,2:01:55,4:11:24,FIN
+161,Mateo Eskild,M,18-34,Tidewater TC,1:51:04,3:49:01,FIN
+162,Pavel Garrow,M,60+,Lighthouse Joggers,2:09:47,4:27:36,FIN
+163,Anders Ivers,M,40-44,Dune Pacers,1:56:50,3:46:53,FIN
+164,Maren Oakes,F,35-39,Gull Road Runners,2:15:32,4:39:28,FIN
+165,Noor Dunmore,F,18-34,Harbour Striders,2:15:50,4:40:05,FIN
+166,Greta Jessop,F,40-44,Tidewater TC,2:13:53,4:36:04,FIN
+167,Sela Kerrigan,F,40-44,Lighthouse Joggers,2:04:38,4:16:59,FIN
+168,Greta Corvell,F,40-44,Unattached,2:06:25,4:20:40,FIN
+169,Dario Corvell,M,18-34,Gull Road Runners,2:27:41,5:04:32,FIN
+170,Maren Dunmore,F,50-59,Gull Road Runners,2:03:27,,DNF
+171,Sela Garrow,F,40-44,Harbour Striders,2:00:27,4:08:23,FIN
+172,Dario Kerrigan,M,18-34,Lighthouse Joggers,2:13:10,4:18:35,FIN
+173,Britta Dunmore,F,18-34,Lighthouse Joggers,2:10:36,4:29:18,FIN
+174,Lukas Ivers,M,35-39,Lighthouse Joggers,1:48:19,3:43:20,FIN
+175,Odile Nyberg,F,40-44,Lighthouse Joggers,2:10:40,4:29:25,FIN
+176,Rafael Nyberg,M,45-49,Tidewater TC,2:06:14,4:20:18,FIN
+177,Lukas Brandt,M,18-34,Lighthouse Joggers,1:41:33,3:29:23,FIN
+178,Kasper Marlow,M,18-34,Unattached,1:59:20,4:06:03,FIN
+179,Britta Pryce,F,18-34,Gull Road Runners,2:06:07,4:20:03,FIN
+180,Greta Dunmore,F,18-34,Harbour Striders,1:53:08,3:53:17,FIN
+181,Ayla Jessop,F,35-39,Lighthouse Joggers,2:08:11,4:24:18,FIN
+182,Greta Marlow,F,35-39,Harbour Striders,2:07:51,4:23:38,FIN
+183,Tobias Ivers,M,18-34,Gull Road Runners,2:00:36,4:08:41,FIN
+184,Maren Jessop,F,35-39,Lighthouse Joggers,1:55:49,3:58:49,FIN
+185,Lucia Holm,F,18-34,Harbour Striders,1:59:09,4:05:42,FIN
+186,Kasper Alder,M,40-44,Dune Pacers,2:02:37,3:58:06,FIN
+187,Mateo Oakes,M,18-34,Unattached,1:50:00,3:46:50,FIN
+188,Emil Jessop,M,35-39,Tidewater TC,2:08:11,4:08:54,FIN
+189,Noor Kerrigan,F,50-59,Gull Road Runners,2:20:49,4:50:21,FIN
+190,Pavel Pryce,M,18-34,Tidewater TC,1:58:04,4:03:28,FIN
+191,Ayla Kerrigan,F,18-34,Gull Road Runners,2:14:25,,DNF
+192,Ayla Oakes,F,45-49,Unattached,2:10:40,4:13:44,FIN
+193,Lucia Fenwick,F,18-34,Dune Pacers,1:40:43,3:15:34,FIN
+194,Joren Dunmore,M,18-34,Lighthouse Joggers,2:03:20,4:14:18,FIN
+195,Soren Alder,M,60+,Gull Road Runners,1:53:11,3:53:24,FIN
+196,Ines Garrow,F,60+,Tidewater TC,2:50:09,5:50:50,FIN
+197,Mateo Corvell,M,18-34,Gull Road Runners,1:51:40,3:50:15,FIN
+198,Tove Fenwick,F,18-34,Tidewater TC,2:19:35,4:31:03,FIN
+199,Anders Fenwick,M,50-59,Tidewater TC,1:50:41,3:48:13,FIN
+200,Tobias Kerrigan,M,18-34,Gull Road Runners,1:49:37,3:32:51,FIN
+201,Britta Alder,F,45-49,Unattached,2:17:42,4:43:56,FIN
+202,Tove Garrow,F,18-34,Harbour Striders,2:00:14,4:07:56,FIN
+203,Pavel Brandt,M,45-49,Harbour Striders,1:57:37,4:02:31,FIN
+204,Britta Fenwick,F,50-59,Unattached,2:45:51,5:22:04,FIN
+205,Emil Garrow,M,40-44,Gull Road Runners,2:14:44,4:37:49,FIN
+206,Lukas Jessop,M,40-44,Lighthouse Joggers,2:00:45,4:09:00,FIN
+207,Ayla Fenwick,F,60+,Gull Road Runners,2:12:21,4:32:54,FIN
+208,Noor Corvell,F,45-49,Dune Pacers,2:43:17,,DNF
+209,Joren Ivers,M,40-44,Unattached,1:46:56,3:40:29,FIN
+210,Lucia Nyberg,F,18-34,Lighthouse Joggers,1:36:27,3:07:18,FIN
+211,Ayla Nyberg,F,45-49,Unattached,1:59:10,4:05:44,FIN
+212,Priya Holm,F,45-49,Unattached,2:03:43,4:15:07,FIN
+213,Emil Brandt,M,35-39,Dune Pacers,2:14:41,4:37:43,FIN
+214,Hana Eskild,F,50-59,Tidewater TC,2:09:38,4:27:19,FIN
+215,Britta Eskild,F,18-34,Lighthouse Joggers,2:01:16,4:10:04,FIN
+216,Idris Pryce,M,40-44,Lighthouse Joggers,2:19:34,4:47:47,FIN
+217,Rafael Alder,M,18-34,Unattached,1:44:52,3:36:14,FIN
+218,Dario Marlow,M,35-39,Dune Pacers,1:54:01,3:41:24,FIN
+219,Sela Jessop,F,18-34,Tidewater TC,1:55:58,3:59:08,FIN
+220,Pavel Ivers,M,50-59,Harbour Striders,2:25:48,5:00:38,FIN
+221,Britta Marlow,F,18-34,Unattached,2:19:54,4:48:28,FIN
+222,Lukas Kerrigan,M,35-39,Harbour Striders,1:45:12,3:36:56,FIN
+223,Anders Oakes,M,40-44,Lighthouse Joggers,1:51:31,3:49:57,FIN
+224,Odile Corvell,F,40-44,Lighthouse Joggers,2:08:56,4:25:51,FIN
+225,Emil Corvell,M,45-49,Gull Road Runners,2:15:10,4:22:29,FIN
+226,Greta Alder,F,18-34,Gull Road Runners,2:06:47,4:21:26,FIN
+227,Joren Jessop,M,45-49,Dune Pacers,1:48:25,3:43:33,FIN
+228,Kasper Jessop,M,60+,Dune Pacers,1:57:18,,DNF
+229,Pavel Fenwick,M,18-34,Tidewater TC,1:51:38,3:50:11,FIN
+230,Emil Holm,M,18-34,Lighthouse Joggers,1:54:07,3:55:18,FIN
+231,Mateo Pryce,M,18-34,Tidewater TC,1:47:45,3:42:10,FIN
+232,Tobias Dunmore,M,35-39,Lighthouse Joggers,2:08:42,4:25:22,FIN
+233,Sela Lindqvist,F,40-44,Lighthouse Joggers,2:08:04,4:24:05,FIN
+234,Hana Oakes,F,40-44,Dune Pacers,2:24:00,4:39:38,FIN
+235,Kasper Garrow,M,50-59,Unattached,2:01:42,4:10:56,FIN
+236,Anders Corvell,M,40-44,Unattached,1:57:37,4:02:31,FIN
+237,Greta Ivers,F,50-59,Dune Pacers,2:26:54,4:45:15,FIN
+238,Kasper Corvell,M,35-39,Lighthouse Joggers,1:53:28,3:53:59,FIN
+239,Sela Nyberg,F,35-39,Unattached,2:16:21,,DNF
+240,Idris Nyberg,M,35-39,Harbour Striders,1:42:41,3:31:45,FIN
+241,Ayla Holm,F,50-59,Tidewater TC,2:25:21,4:59:42,FIN
+242,Mateo Nyberg,M,18-34,Dune Pacers,2:01:03,3:55:04,FIN
+243,Sela Ivers,F,45-49,Harbour Striders,2:05:36,4:18:59,FIN
+244,Greta Kerrigan,F,35-39,Dune Pacers,2:13:24,4:19:03,FIN
+245,Odile Jessop,F,60+,Gull Road Runners,2:09:52,4:12:12,FIN
+246,Mateo Holm,M,18-34,Dune Pacers,1:57:32,4:02:22,FIN
+247,Idris Marlow,M,45-49,Gull Road Runners,2:12:17,4:16:53,FIN
+248,Lucia Marlow,F,60+,Dune Pacers,2:29:50,5:08:58,FIN
+249,Ines Nyberg,F,18-34,Harbour Striders,1:51:02,3:35:36,FIN
+250,Idris Jessop,M,40-44,Lighthouse Joggers,2:11:36,4:31:22,FIN
+251,Mateo Garrow,M,18-34,Unattached,2:03:32,4:14:44,FIN
+252,Joren Garrow,M,45-49,Harbour Striders,2:25:53,4:43:17,FIN
+253,Emil Oakes,M,18-34,Dune Pacers,1:42:40,3:31:43,FIN
+254,Sela Oakes,F,45-49,Harbour Striders,2:11:46,4:31:42,FIN
+255,Mateo Alder,M,35-39,Gull Road Runners,2:06:14,4:20:18,FIN
+256,Greta Nyberg,F,35-39,Harbour Striders,2:05:50,4:19:28,FIN
+257,Lucia Brandt,F,35-39,Dune Pacers,2:09:19,4:11:07,FIN
+258,Idris Holm,M,35-39,Lighthouse Joggers,2:00:47,4:09:04,FIN
+259,Joren Eskild,M,40-44,Harbour Striders,1:48:40,3:44:04,FIN
+260,Kasper Ivers,M,18-34,Tidewater TC,1:57:17,4:01:50,FIN
+261,Hana Corvell,F,45-49,Harbour Striders,2:17:01,,DNF
+262,Sela Pryce,F,35-39,Unattached,2:06:32,,DNF
+263,Emil Nyberg,M,18-34,Harbour Striders,2:05:09,4:18:04,FIN
+264,Sela Marlow,F,35-39,Gull Road Runners,2:09:46,4:27:35,FIN
+265,Lucia Eskild,F,45-49,Harbour Striders,2:11:23,4:30:55,FIN
+266,Soren Fenwick,M,18-34,Gull Road Runners,1:59:35,4:06:35,FIN
+267,Anders Nyberg,M,60+,Tidewater TC,2:23:02,,DNF
+268,Britta Corvell,F,18-34,Harbour Striders,2:10:12,4:28:28,FIN
+269,Greta Oakes,F,18-34,Dune Pacers,2:18:29,4:28:55,FIN
+270,Lucia Lindqvist,F,45-49,Gull Road Runners,2:16:57,4:42:24,FIN
+271,Idris Fenwick,M,40-44,Lighthouse Joggers,2:06:56,4:21:45,FIN
+272,Tobias Nyberg,M,35-39,Gull Road Runners,1:59:21,4:06:06,FIN
+273,Soren Ivers,M,18-34,Lighthouse Joggers,1:58:43,4:04:48,FIN
+274,Ayla Eskild,F,18-34,Harbour Striders,2:25:21,4:59:43,FIN
+275,Idris Corvell,M,60+,Gull Road Runners,1:41:37,,DNF
+276,Kasper Nyberg,M,18-34,Lighthouse Joggers,1:38:05,3:22:15,FIN
+277,Anders Lindqvist,M,50-59,Unattached,2:00:09,4:07:44,FIN
+278,Pavel Eskild,M,35-39,Gull Road Runners,2:16:41,4:41:50,FIN
+279,Hana Garrow,F,50-59,Lighthouse Joggers,2:06:52,4:21:36,FIN
+280,Lukas Garrow,M,18-34,Lighthouse Joggers,2:00:03,4:07:32,FIN
+281,Dario Lindqvist,M,18-34,Dune Pacers,1:53:07,3:39:39,FIN
+282,Joren Pryce,M,40-44,Lighthouse Joggers,2:13:57,4:20:07,FIN
+283,Lucia Kerrigan,F,18-34,Gull Road Runners,2:04:51,4:17:26,FIN
+284,Anders Marlow,M,35-39,Harbour Striders,2:17:50,4:44:12,FIN
+285,Lucia Corvell,F,35-39,Unattached,2:04:10,4:16:01,FIN
+286,Tove Brandt,F,60+,Harbour Striders,2:34:56,5:19:28,FIN
+287,Tove Eskild,F,18-34,Lighthouse Joggers,2:11:30,4:31:10,FIN
+288,Dario Nyberg,M,50-59,Lighthouse Joggers,1:53:01,3:39:28,FIN
+289,Idris Ivers,M,18-34,Tidewater TC,1:48:14,3:43:11,FIN
+290,Tobias Pryce,M,40-44,Tidewater TC,2:05:58,4:19:45,FIN
+291,Lucia Garrow,F,35-39,Harbour Striders,2:03:46,4:15:12,FIN
+292,Odile Garrow,F,18-34,Lighthouse Joggers,2:13:05,4:34:25,FIN
+293,Priya Kerrigan,F,50-59,Harbour Striders,2:19:09,4:30:12,FIN
+294,Greta Lindqvist,F,35-39,Unattached,1:56:43,4:00:40,FIN
+295,Sela Holm,F,35-39,Lighthouse Joggers,2:11:28,4:31:04,FIN
+296,Britta Ivers,F,45-49,Harbour Striders,1:55:05,3:57:18,FIN
+297,Emil Pryce,M,18-34,Lighthouse Joggers,1:44:09,3:34:45,FIN
+298,Ayla Marlow,F,50-59,Tidewater TC,2:11:39,4:31:27,FIN
+299,Noor Marlow,F,35-39,Dune Pacers,2:12:14,4:32:39,FIN
+300,Ines Pryce,F,50-59,Unattached,2:18:46,4:46:09,FIN
+301,Maren Fenwick,F,45-49,Tidewater TC,2:31:06,5:11:34,FIN
+302,Odile Oakes,F,50-59,Harbour Striders,2:14:51,4:38:03,FIN
+303,Anders Kerrigan,M,35-39,Lighthouse Joggers,2:13:23,4:35:02,FIN
+304,Tobias Holm,M,50-59,Unattached,2:13:24,4:35:04,FIN
+305,Tobias Marlow,M,18-34,Lighthouse Joggers,2:11:23,4:30:55,FIN
+306,Rafael Corvell,M,45-49,Harbour Striders,2:22:37,4:54:04,FIN
+307,Pavel Nyberg,M,18-34,Harbour Striders,1:43:19,3:33:03,FIN
+308,Hana Jessop,F,40-44,Unattached,2:14:46,4:21:42,FIN
+309,Odile Lindqvist,F,35-39,Dune Pacers,2:11:36,4:15:33,FIN
+310,Priya Garrow,F,18-34,Tidewater TC,2:06:42,4:21:15,FIN
+311,Rafael Marlow,M,45-49,Dune Pacers,1:54:03,3:55:11,FIN
+312,Hana Fenwick,F,35-39,Harbour Striders,1:48:07,3:42:56,FIN
+313,Soren Corvell,M,18-34,Harbour Striders,2:01:09,4:09:49,FIN
+314,Maren Corvell,F,50-59,Unattached,2:08:41,4:25:20,FIN
+315,Noor Nyberg,F,45-49,Lighthouse Joggers,1:56:26,4:00:05,FIN
+316,Idris Brandt,M,35-39,Tidewater TC,1:42:56,3:32:15,FIN
+317,Britta Jessop,F,50-59,Lighthouse Joggers,2:09:54,4:27:51,FIN
+318,Joren Kerrigan,M,18-34,Dune Pacers,2:21:17,4:34:21,FIN
+319,Kasper Dunmore,M,50-59,Unattached,2:10:33,4:29:11,FIN
+320,Britta Oakes,F,35-39,Harbour Striders,2:14:42,4:37:44,FIN
+321,Ayla Brandt,F,60+,Dune Pacers,2:49:49,5:29:46,FIN
+322,Hana Marlow,F,50-59,Gull Road Runners,2:04:47,4:17:19,FIN
+323,Odile Fenwick,F,40-44,Gull Road Runners,1:33:10,3:04:18,FIN
+324,Emil Eskild,M,50-59,Gull Road Runners,2:37:46,5:06:21,FIN
+325,Soren Lindqvist,M,18-34,Dune Pacers,2:19:43,4:31:19,FIN
+326,Soren Holm,M,50-59,Harbour Striders,2:03:13,,DNF
+327,Anders Alder,M,40-44,Harbour Striders,2:09:16,4:26:33,FIN
+328,Anders Eskild,M,40-44,Lighthouse Joggers,2:07:17,4:22:28,FIN
+329,Lucia Dunmore,F,45-49,Unattached,2:21:12,4:51:10,FIN
+330,Ayla Dunmore,F,35-39,Gull Road Runners,2:07:52,4:23:40,FIN
+331,Rafael Kerrigan,M,35-39,Tidewater TC,1:57:23,4:02:03,FIN
+332,Dario Pryce,M,35-39,Tidewater TC,2:11:15,4:30:39,FIN
+333,Tove Corvell,F,60+,Dune Pacers,2:17:19,4:43:09,FIN
+334,Idris Lindqvist,M,35-39,Lighthouse Joggers,1:59:58,4:07:22,FIN
+335,Kasper Eskild,M,18-34,Unattached,2:15:39,4:39:43,FIN
+336,Kasper Pryce,M,35-39,Tidewater TC,2:09:49,4:27:40,FIN
+337,Odile Brandt,F,18-34,Lighthouse Joggers,1:58:38,4:04:38,FIN
+338,Ayla Ivers,F,60+,Harbour Striders,2:22:52,4:54:35,FIN
+339,Ines Lindqvist,F,50-59,Unattached,2:10:27,4:29:00,FIN
+340,Tove Oakes,F,50-59,Harbour Striders,2:12:41,4:33:35,FIN

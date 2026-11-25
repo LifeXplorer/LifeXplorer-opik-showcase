@@ -1,0 +1,21 @@
+[project]
+name = "smolagents-race-results-analyst"
+version = "0.1.0"
+description = "smolagents CodeAgent that answers questions about a marathon results CSV by writing pandas code, with the generated code and execution logs traced to Opik over OTLP"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "openinference-instrumentation-smolagents>=0.1.53",
+    "opentelemetry-exporter-otlp>=1.45.2",
+    "opentelemetry-sdk>=1.45.2",
+    "pandas>=3.1.1",
+    "python-dotenv>=1.2.4",
+    "smolagents[openai]>=1.26.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

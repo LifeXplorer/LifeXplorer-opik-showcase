@@ -4,7 +4,7 @@ import type { Runnable, RunnableConfig } from "@langchain/core/runnables";
 import type { BaseLanguageModel } from "@langchain/core/language_models/base";
 import { HumanMessage } from "@langchain/core/messages";
 import type { BaseMessage } from "@langchain/core/messages";
-import { formatShortlist, parseWishes, shortlist } from "./catalog.js";
+import { formatShortlist, mentionedGames, parseWishes, shortlist } from "./catalog.js";
 import type { Game } from "./catalog.js";
 import { prompt } from "./prompt.js";
 import type { SessionStore } from "./sessions.js";
@@ -31,7 +31,11 @@ function prepareTurn(store: SessionStore, catalog: Game[]) {
   return RunnableLambda.from((message: string, config?: RunnableConfig): TurnInput => {
     const { history } = store.get(sessionIdOf(config));
     const said = [...history.filter((m) => m instanceof HumanMessage).map((m) => String(m.content)), message];
-    const picks = shortlist(catalog, parseWishes(said.join(" \n ")));
+    const ranked = shortlist(catalog, parseWishes(said.join(" \n ")));
+    // Keep every game already named in the conversation (guest or host), so "which of
+    // those is quickest?" is answered from catalog facts instead of invented ones.
+    const named = mentionedGames(catalog, [...history.map((m) => String(m.content)), message].join(" \n "));
+    const picks = [...named, ...ranked.filter((g) => !named.includes(g))].slice(0, 6);
     return { history, message, shortlist: formatShortlist(picks) };
   }).withConfig({ runName: "prepare-turn" });
 }

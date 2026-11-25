@@ -89,6 +89,12 @@ export function shortlist(games: Game[], wishes: Wishes, limit = 4): Game[] {
     .map((x) => x.g);
 }
 
+/** Games whose names appear in the text, so a follow-up like "which of those?" keeps them. */
+export function mentionedGames(games: Game[], text: string): Game[] {
+  const t = text.toLowerCase().replace(/&/g, "and");
+  return games.filter((g) => t.includes(g.name.toLowerCase().replace(/&/g, "and")));
+}
+
 export function formatShortlist(games: Game[]): string {
   if (games.length === 0) return "(no game in the library fits that party size)";
   return games

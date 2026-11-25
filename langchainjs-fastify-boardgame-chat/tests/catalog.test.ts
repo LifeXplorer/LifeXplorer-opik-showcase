@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { loadCatalog, parseWishes, shortlist } from "../src/catalog.js";
+import { loadCatalog, mentionedGames, parseWishes, shortlist } from "../src/catalog.js";
 
 describe("parseWishes", () => {
   it("reads party size, time, difficulty and mood from free text", () => {
@@ -32,5 +32,12 @@ describe("shortlist", () => {
 
   it("returns nothing when no game fits the party", () => {
     expect(shortlist(catalog, { players: 12, tags: [] })).toEqual([]);
+  });
+});
+
+describe("mentionedGames", () => {
+  it("finds games by name, ignoring case and the ampersand", () => {
+    const names = mentionedGames(loadCatalog(), "how long does fox & LANTERN take, or moth and flame?").map((g) => g.name);
+    expect(names).toEqual(expect.arrayContaining(["Fox & Lantern", "Moth & Flame"]));
   });
 });

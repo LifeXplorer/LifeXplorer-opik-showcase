@@ -5,16 +5,26 @@ specialists call function tools backed by a small fictional policy file.
 """
 
 import json
+import os
 import uuid
 from pathlib import Path
 
 from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv(usecwd=True))
+# The Opik project is read when the SDK client is created, so set it
+# before importing opik: every trace lands in this one project.
+os.environ["OPIK_PROJECT_NAME"] = "openai-agents-insurance-claims"
 
-from agents import Agent, Runner, function_tool
+import opik
+from agents import Agent, Runner, function_tool, set_trace_processors, trace
+from opik.integrations.openai.agents import OpikTracingProcessor
 
 import claims_core
+
+# Replaces the SDK's default processor: agent runs, handoffs, tool calls and
+# LLM calls become Opik traces and spans (types: general, llm, tool).
+set_trace_processors(processors=[OpikTracingProcessor()])
 
 MODEL = "gpt-4o-mini"
 
@@ -110,7 +120,10 @@ def run_demo() -> list[dict]:
         for message in spec["turns"]:
             print(f"\nCustomer: {message}")
             history.append({"role": "user", "content": message})
-            result = Runner.run_sync(triage_agent, history)
+            # One SDK trace per turn. The shared group_id becomes the Opik
+            # thread id, so the turns of a claim read as one conversation.
+            with trace(workflow_name="Claims intake", group_id=thread_id):
+                result = Runner.run_sync(triage_agent, history)
             print(f"{result.last_agent.name}: {result.final_output}")
             history = result.to_input_list()
         rows.append({"conversation": name, "expected": spec["expected"],
@@ -119,5 +132,10 @@ def run_demo() -> list[dict]:
 
 
 if __name__ == "__main__":
-    for row in run_demo():
-        print(row)
+    try:
+        for row in run_demo():
+            print(row)
+    finally:
+        # Traces are sent in the background; without a flush the last
+        # ones can be lost when the process exits.
+        opik.flush_tracker()

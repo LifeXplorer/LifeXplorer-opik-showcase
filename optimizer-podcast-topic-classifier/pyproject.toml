@@ -1,0 +1,9 @@
+[project]
+name = "optimizer-podcast-topic-classifier"
+version = "0.1.0"
+description = "Classify podcast episodes into topics with a plain LLM prompt"
+requires-python = ">=3.12"
+dependencies = [
+    "openai>=1.60",
+    "python-dotenv>=1.0",
+]

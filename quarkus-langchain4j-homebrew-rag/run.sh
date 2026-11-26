@@ -30,3 +30,6 @@ How much priming sugar do I add for a 5-gallon batch?
 Why shouldn't I use bleach to sanitize my fermenter?
 Can I age my beer in oak barrels with Brettanomyces?
 QUESTIONS
+
+# The EXIT trap sends SIGTERM and waits: Quarkus' shutdown hook flushes the OpenTelemetry batch
+# processor, so the last spans still reach Opik. (kill -9 here would drop them.)

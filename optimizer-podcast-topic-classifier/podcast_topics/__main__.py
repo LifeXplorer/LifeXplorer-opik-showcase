@@ -7,6 +7,7 @@ os.environ.pop("OPENAI_BASE_URL", None)
 os.environ.pop("OPENAI_API_BASE", None)
 
 import dotenv
+import opik
 
 dotenv.load_dotenv(dotenv.find_dotenv(usecwd=True))
 
@@ -23,6 +24,8 @@ def main() -> None:
         scores.append(score)
         print(f"{'ok ' if score else 'MISS'} [{label:10}] -> {answer[:60]!r}")
     print(f"\nbaseline accuracy: {sum(scores) / len(scores):.3f} on {len(scores)} episodes")
+    # Traces are sent from a background thread; flush so none are lost at exit.
+    opik.flush_tracker()
 
 
 if __name__ == "__main__":

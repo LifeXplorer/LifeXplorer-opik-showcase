@@ -1,0 +1,26 @@
+{
+  "reef-01": {
+    "name": "Coral Ledge",
+    "type": "reef",
+    "volume_litres": 400,
+    "inhabitants": ["clownfish pair", "royal gramma", "hammer coral", "cleaner shrimp"],
+    "last_water_change": "6 days ago",
+    "keeper": "Marisol Quint"
+  },
+  "shrimp-04": {
+    "name": "Moss Garden",
+    "type": "shrimp",
+    "volume_litres": 30,
+    "inhabitants": ["cherry shrimp colony (~120)", "nerite snails"],
+    "last_water_change": "3 days ago",
+    "keeper": "Tobias Ellery"
+  },
+  "comm-07": {
+    "name": "Lantern Room",
+    "type": "freshwater_community",
+    "volume_litres": 200,
+    "inhabitants": ["neon tetras", "corydoras", "harlequin rasboras", "bristlenose pleco"],
+    "last_water_change": "11 days ago",
+    "keeper": "Priya Anand"
+  }
+}

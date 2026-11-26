@@ -15,14 +15,14 @@ export interface Corpus {
   strings: UiString[];
 }
 
-export interface CheckResult {
+export type CheckResult = {
   placeholders: { ok: boolean; missing: string[]; extra: string[] };
   glossary: { ok: boolean; violations: string[] };
   length: { ok: boolean; ratio: number };
   similarity: number;
-}
+};
 
-export interface Verdict {
+export type Verdict = {
   verdict: "pass" | "review";
   reasons: string[];
-}
+};

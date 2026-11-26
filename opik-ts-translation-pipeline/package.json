@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "dotenv": "^17.2.3",
-    "openai": "^6.9.0"
+    "openai": "^6.9.0",
+    "opik": "2.3.4"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

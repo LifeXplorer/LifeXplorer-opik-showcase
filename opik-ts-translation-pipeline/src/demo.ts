@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 
 import { MODEL, openAiClient } from "./llm.js";
 import { processString } from "./pipeline.js";
+import { opik } from "./tracing.js";
 import type { Corpus } from "./types.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -28,6 +29,11 @@ async function main() {
     console.log(`   ${item.text}\n   ${r.translated}\n   (back) ${r.backTranslated}`);
     if (r.verdict.reasons.length) console.log(`   ${r.verdict.reasons.join(" | ")}`);
   }
+
+  // The SDK sends traces from a background batch queue. A script that exits first drops
+  // whatever is still queued, so flush() must be awaited before the process ends.
+  await opik.flush();
+  console.log('\nDone. Open the "opik-ts-translation-pipeline" project in Opik.');
 }
 
 main().catch((error) => {

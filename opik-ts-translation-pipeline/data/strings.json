@@ -1,0 +1,31 @@
+{
+  "app": "Tidepool",
+  "targetLanguage": "German",
+  "glossary": [
+    { "source": "tide window", "target": "Gezeitenfenster" },
+    { "source": "catch log", "target": "Fangbuch" },
+    { "source": "slack water", "target": "Stillwasser" }
+  ],
+  "strings": [
+    {
+      "key": "home.next_window",
+      "text": "Your next tide window opens at {time}."
+    },
+    {
+      "key": "log.saved",
+      "text": "{name}, your catch log entry was saved. You now have {count} entries."
+    },
+    {
+      "key": "alert.slack_water",
+      "text": "Slack water in {minutes} minutes. Reel in your lines."
+    },
+    {
+      "key": "share.invite",
+      "text": "Join {name} on Tidepool and compare tide windows."
+    },
+    {
+      "key": "settings.reset",
+      "text": "Resetting clears every saved catch log on this device. This cannot be undone."
+    }
+  ]
+}

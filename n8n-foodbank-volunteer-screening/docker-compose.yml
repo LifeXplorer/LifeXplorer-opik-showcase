@@ -1,0 +1,17 @@
+name: n8n-foodbank
+
+services:
+  n8n:
+    build: .
+    container_name: n8n-foodbank-screening
+    ports:
+      - "5680:5678"
+    environment:
+      N8N_SECURE_COOKIE: "false"       # allow login over plain http://localhost
+      N8N_RUNNERS_ENABLED: "true"
+      N8N_DIAGNOSTICS_ENABLED: "false"
+    volumes:
+      - n8n_foodbank_data:/home/node/.n8n
+
+volumes:
+  n8n_foodbank_data:

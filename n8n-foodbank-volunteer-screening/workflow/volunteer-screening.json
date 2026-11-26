@@ -1,0 +1,125 @@
+{
+  "name": "Volunteer screening",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "nodes": [
+    {
+      "id": "7c1a0e52-6b21-4c1d-8a10-aaaa11110001",
+      "name": "Sign-up webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "3d5e7a90-1f2b-4c6d-9e8f-bbbb22220002",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "volunteer-signup",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "8d2b1f63-7c32-4d2e-9b21-aaaa11110003",
+      "name": "Screen volunteer (gpt-4o-mini)",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [220, 0],
+      "parameters": {
+        "resource": "text",
+        "operation": "message",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "id"
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You screen volunteer sign-ups for Harvest Table, a neighbourhood food bank. Roles: sorting (warehouse, lifting up to 20 kg, ages 16+), packing (seated, any age 12+ with a guardian), driver (needs a full licence and a clean record; adults only), front_desk (greets clients, needs 18+ and Spanish or Vietnamese is a plus). Decide one of: accept (clear fit, can start), follow_up (promising but a detail is missing or a check is needed, e.g. a minor without a guardian, a driver who has not said they hold a licence, availability unclear), decline (cannot be placed, e.g. only wants a one-off photo opportunity or asks for payment). Reply with a JSON object with exactly these keys: decision (\"accept\", \"follow_up\" or \"decline\"), role (one of sorting, packing, driver, front_desk, or \"none\"), reason (one sentence), welcome_note (two friendly sentences addressed to the volunteer by first name)."
+            },
+            {
+              "role": "user",
+              "content": "=Name: {{ $json.body.name }}\nAge: {{ $json.body.age }}\nAvailability: {{ $json.body.availability }}\nNote: {{ $json.body.note }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "credentials": {
+        "openAiApi": {
+          "id": "__OPENAI_CREDENTIAL_ID__",
+          "name": "OpenAI (volunteer screening)"
+        }
+      }
+    },
+    {
+      "id": "9e3c2074-8d43-4e3f-8c32-aaaa11110004",
+      "name": "Shape the answer",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [440, 0],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f1",
+              "name": "volunteer",
+              "type": "string",
+              "value": "={{ $('Sign-up webhook').item.json.body.name }}"
+            },
+            {
+              "id": "f2",
+              "name": "decision",
+              "type": "string",
+              "value": "={{ $json.message.content.decision }}"
+            },
+            {
+              "id": "f3",
+              "name": "role",
+              "type": "string",
+              "value": "={{ $json.message.content.role }}"
+            },
+            {
+              "id": "f4",
+              "name": "reason",
+              "type": "string",
+              "value": "={{ $json.message.content.reason }}"
+            },
+            {
+              "id": "f5",
+              "name": "welcome_note",
+              "type": "string",
+              "value": "={{ $json.message.content.welcome_note }}"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "af4d3185-9e54-4f40-9d43-aaaa11110005",
+      "name": "Reply",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [660, 0],
+      "parameters": {
+        "respondWith": "firstIncomingItem",
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Sign-up webhook": {
+      "main": [[{ "node": "Screen volunteer (gpt-4o-mini)", "type": "main", "index": 0 }]]
+    },
+    "Screen volunteer (gpt-4o-mini)": {
+      "main": [[{ "node": "Shape the answer", "type": "main", "index": 0 }]]
+    },
+    "Shape the answer": {
+      "main": [[{ "node": "Reply", "type": "main", "index": 0 }]]
+    }
+  }
+}

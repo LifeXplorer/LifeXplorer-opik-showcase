@@ -28,8 +28,8 @@ none is needed: Quarkus already speaks OpenTelemetry, and Opik ingests OTLP dire
 ## See it in Opik
 
 Open http://localhost:5173, workspace `default`, project `quarkus-langchain4j-homebrew-rag`. After one run
-the Traces tab holds five traces. Four are named `GET /ask`, one per question; the fifth, `POST /embeddings`,
-is the startup indexing call.
+the Traces tab holds four `GET /ask` traces, one per question, plus a standalone `POST /embeddings` trace
+from the startup indexing (the indexer makes two embedding calls; in our run only one showed up as a trace row).
 
 Open a `GET /ask` trace. It has five spans: the server span `GET /ask` at the root, a
 `langchain4j.aiservices.BrewingAssistant.answer` span under it, two `POST /embeddings` HTTP client spans, and
@@ -70,6 +70,14 @@ and `OPIK_OTLP_ENDPOINT=https://www.comet.com/opik/api/v1/private/otel`.
 - **Warnings about `localhost:4318` and a `NullPointerException` in `BatchLogRecordProcessor` at shutdown.**
   Quarkus 4 also exports logs and metrics, and the defaults point at a collector that isn't there. Fix:
   `quarkus.otel.logs.enabled=false` and `quarkus.otel.metrics.enabled=false`.
+
+- **Traces go missing: only some of the four questions (often none) show up, and the app log says nothing.**
+  We watched the exporter through a logging proxy: every batch that left the JVM got HTTP 200, and with the
+  default sampler most requests produced nothing to send. Fix: `quarkus.otel.traces.sampler=always_on`; after
+  that all four questions arrived on every run. One more
+  source of loss: stopping the app right after the last answer dropped that question's trace even with a
+  graceful SIGTERM, so `run.sh` sleeps two seconds before stopping it. In your own service the batch
+  processor keeps running, so this only matters for short scripted runs.
 
 ## How it's put together
 

@@ -31,5 +31,6 @@ Why shouldn't I use bleach to sanitize my fermenter?
 Can I age my beer in oak barrels with Brettanomyces?
 QUESTIONS
 
-# The EXIT trap sends SIGTERM and waits: Quarkus' shutdown hook flushes the OpenTelemetry batch
-# processor, so the last spans still reach Opik. (kill -9 here would drop them.)
+# Let the last batch (200 ms delay) leave before shutdown. Stopping right after the final answer lost that
+# question's trace in our runs, even though the EXIT trap sends SIGTERM and waits for a graceful exit.
+sleep 2

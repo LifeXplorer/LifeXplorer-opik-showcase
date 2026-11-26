@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Send three fictional volunteer sign-ups to the webhook and print the answers.
+# Send three fictional volunteer sign-ups to the webhook, print the answers,
+# then confirm the traces reached Opik.
 set -euo pipefail
 
 WEBHOOK="${WEBHOOK:-http://localhost:5680/webhook/volunteer-signup}"
@@ -39,3 +40,7 @@ send '{
   "availability": "one afternoon only",
   "note": "I run a lifestyle channel and want to film myself handing out food. I would need a fee to cover my time."
 }' "Kayla Moss (wants a paid photo opportunity)"
+
+# Zero-code tracing: each request above is one n8n execution, already exported
+# to Opik by the hooks. Wait for the three traces and list them.
+"$(dirname "$0")/check_traces.sh" 3

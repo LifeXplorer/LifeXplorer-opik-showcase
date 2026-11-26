@@ -8,12 +8,14 @@ for var in ("OPENAI_BASE_URL", "OPENAI_API_BASE"):
 
 import dotenv
 import dspy
+import opik
 
 from chess_qa.compiling import compile_program
 from chess_qa.examples import testset
 from chess_qa.handbook import HANDBOOK
 from chess_qa.metric import house_format_metric
-from chess_qa.program import build_program
+from chess_qa.program import ask, build_program
+from chess_qa.tracing import PROJECT_NAME, install_opik_callback
 
 MODEL = "openai/gpt-4o-mini"
 
@@ -27,17 +29,22 @@ def pass_rate(program) -> float:
 def main() -> None:
     dotenv.load_dotenv(dotenv.find_dotenv())
     dspy.configure(lm=dspy.LM(MODEL, cache=False))
+    install_opik_callback()
 
     program = build_program()
     question = "What does White play on move 3 of the Italian Game?"
     print(f"Q: {question}")
-    print(f"A (uncompiled): {program(context=HANDBOOK, question=question).answer}\n")
+    print(f"A (uncompiled): {ask(program, HANDBOOK, question)}\n")
 
     print("Compiling with BootstrapFewShot...")
     compiled = compile_program(program)
 
     print(f"uncompiled: {pass_rate(program):.0%} pass rate")
     print(f"compiled:   {pass_rate(compiled):.0%} pass rate")
+
+    # Traces are sent from a background thread; flush so none are lost at exit.
+    opik.flush_tracker()
+    print(f"Traces: project {PROJECT_NAME!r} in Opik")
 
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@ description = "A DSPy chess-openings QA program that compiles its own few-shot p
 requires-python = ">=3.12"
 dependencies = [
     "dspy>=3.0",
+    "opik>=2.3.4",
     "python-dotenv>=1.0",
 ]
 

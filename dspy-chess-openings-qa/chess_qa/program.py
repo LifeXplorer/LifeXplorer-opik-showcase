@@ -1,6 +1,7 @@
 """The DSPy program: a ChainOfThought over the opening cards."""
 
 import dspy
+import opik
 
 
 class OpeningQA(dspy.Signature):
@@ -15,3 +16,10 @@ class OpeningQA(dspy.Signature):
 # answers in ordinary prose. Only compiled demos can teach the convention.
 def build_program() -> dspy.Module:
     return dspy.ChainOfThought(OpeningQA)
+
+
+# track opens a general-type root span, so the DSPy callback spans nest under one
+# named "ask_coach" trace instead of each module call becoming its own trace.
+@opik.track(name="ask_coach", type="general")
+def ask(program: dspy.Module, context: str, question: str) -> str:
+    return program(context=context, question=question).answer

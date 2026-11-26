@@ -36,6 +36,26 @@ export async function processString(client: ChatClient, corpus: Corpus, item: Ui
   const verdict = decide(checks);
   decideSpan.update({ output: verdict }).end();
 
+  // Feedback scores land in the trace's "Feedback scores" column, one per name, so a reviewer
+  // can sort the trace list by any single check. The reason shows on hover.
+  trace.score({
+    name: "placeholder-integrity",
+    value: checks.placeholders.ok ? 1 : 0,
+    reason: checks.placeholders.ok
+      ? "all placeholders preserved"
+      : `missing [${checks.placeholders.missing}] extra [${checks.placeholders.extra}]`,
+  });
+  trace.score({
+    name: "glossary-compliance",
+    value: checks.glossary.ok ? 1 : 0,
+    reason: checks.glossary.ok ? "glossary terms respected" : checks.glossary.violations.join("; "),
+  });
+  trace.score({
+    name: "backtranslation-similarity",
+    value: checks.similarity,
+    reason: `back-translation: ${backTranslation.text}`,
+  });
+
   // The root output and a tag per verdict make the trace list filterable by pass/review.
   trace.update({ output: { translated: translation.text, ...verdict }, tags: [verdict.verdict] }).end();
 

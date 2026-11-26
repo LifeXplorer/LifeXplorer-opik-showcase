@@ -1,6 +1,6 @@
 # dspy-chess-openings-qa
 
-*A DSPy program that writes its own few-shot prompt, and an Opik test suite that shows what the prompt bought: 0 of 8 items before, 7 of 8 after.*
+*A DSPy program that writes its own few-shot prompt, and an Opik test suite that shows what the prompt bought: 0 of 8 items before, 6 of 8 after.*
 
 ![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-3776AB?logo=python&logoColor=white)
 ![DSPy 3](https://img.shields.io/badge/DSPy-3.x-8B0000)
@@ -23,12 +23,12 @@ Rookfield Chess Club (fictional) keeps a binder of opening cards for its junior 
 
 Open the **dspy-chess-openings-qa** project (local Opik at `http://localhost:5173`, workspace `default`).
 
-- **Test suites tab.** One suite with 8 items. Open its two runs: `dspy-uncompiled` passed 0/8 and `dspy-compiled` passed 7/8 in the verified run. The uncompiled run is the interesting one. All eight fact assertions pass, while the card-tag and right-card assertions pass 0/8 and the "short answer" assertion passes 4/8. The model knew the chess and had never seen the convention.
-- **Traces tab.** 22 traces from one run: 16 `evaluation_task` traces (8 per suite run), 5 `ChainOfThought` traces and 1 `ask_coach` trace. Open an `evaluation_task` trace: its `task` span contains `ask_coach`, then `ChainOfThought`, then `Predict`, then an `LM: openai - gpt-4o-mini` llm span with token usage and cost. Click that LM span in a compiled-run trace to see four worked examples sitting in the prompt, each with reasoning and a `| card:` answer. The same span in an uncompiled trace has none.
-- **The 5 `ChainOfThought` traces** are the bootstrap teacher attempts from compiling; four passed the metric and became the demos. The `ask_coach` trace is the single question printed at the start.
+- **Test suites tab.** One suite with 8 items. Open its two runs: `dspy-uncompiled` passed 0/8 and `dspy-compiled` passed 6/8 in the verified run. The uncompiled run is the interesting one. All eight fact assertions pass, while the card-tag and right-card assertions pass 0/8 and the "short answer" assertion passes 2/8. The model knew the chess and had never seen the convention.
+- **Traces tab.** 23 traces from one run: 16 `evaluation_task` traces (8 per suite run), 6 `ChainOfThought` traces and 1 `ask_coach` trace. Open an `evaluation_task` trace: its `task` span contains `ask_coach`, then `ChainOfThought`, then `Predict`, then an `LM: openai - gpt-4o-mini` llm span with token usage and cost. Click that LM span in a compiled-run trace to see four worked examples sitting in the prompt, each with reasoning and a `| card:` answer. The same span in an uncompiled trace has none.
+- **The 6 `ChainOfThought` traces** are the bootstrap teacher attempts from compiling (the count follows how many tickets the optimizer needs); four passed the metric and became the demos. The `ask_coach` trace is the single question printed at the start.
 - **Trace metadata.** `_opik_graph_definition` holds a mermaid diagram of the module graph (from `log_graph=True`).
 
-A run costs about two cents and takes under a minute. The judge is an LLM, so the compiled pass count moves between runs (we saw 4 to 7 of 8 across builds, mostly on the card-tag assertion); the uncompiled run stayed at 0.
+A run costs about two cents and takes under a minute. The judge is an LLM, so the compiled pass count moves between runs (we saw 4 to 7 of 8 across builds, mostly on the card-tag assertions: the compiled program sometimes drops the tag on one question); the uncompiled run stayed at 0.
 
 ## Run it yourself
 
@@ -49,6 +49,8 @@ Tests need no keys or Opik: `OPIK_TRACK_DISABLE=true uv run pytest`.
 - Compare an uncompiled and a compiled `LM` span input side by side; the prompt grows by the four demos.
 
 ## Gotchas we hit
+
+**The `ask_coach` trace lands in "Default Project", and Opik prints `You are attempting to log data into a nested span under the project name "dspy-chess-openings-qa"... "Default Project" from parent span will be used instead`.** `@opik.track` picks its project when `opik` is imported, so setting `os.environ["OPIK_PROJECT_NAME"]` afterwards (as `tracing.py` does for the callback) doesn't reach it, and the DSPy spans nested under it follow the parent into the wrong project. Pass it explicitly: `@opik.track(name="ask_coach", type="general", project_name=PROJECT_NAME)`.
 
 **The suite has 16 items after you reworded some assertions.** `suite.insert(...)` skips items identical to stored ones, so an item with edited assertion text is treated as new and the old copy stays. Delete the suite's dataset (`client.rest_client.datasets.delete_dataset_by_name(dataset_name="dspy-chess-openings-qa")`) or its stale items before re-running.
 

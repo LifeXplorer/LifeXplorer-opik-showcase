@@ -1,4 +1,4 @@
-"""Chess-openings QA: compare an uncompiled and a compiled DSPy program."""
+"""Chess-openings QA: run one Opik test suite against an uncompiled and a compiled DSPy program."""
 
 import os
 
@@ -11,19 +11,12 @@ import dspy
 import opik
 
 from chess_qa.compiling import compile_program
-from chess_qa.examples import testset
 from chess_qa.handbook import HANDBOOK
-from chess_qa.metric import house_format_metric
 from chess_qa.program import ask, build_program
+from chess_qa.suite import get_suite, run_suite
 from chess_qa.tracing import PROJECT_NAME, install_opik_callback
 
 MODEL = "openai/gpt-4o-mini"
-
-
-def pass_rate(program) -> float:
-    evaluate = dspy.Evaluate(devset=testset, metric=house_format_metric,
-                             num_threads=4, display_progress=False)
-    return float(evaluate(program).score) / 100
 
 
 def main() -> None:
@@ -36,15 +29,30 @@ def main() -> None:
     print(f"Q: {question}")
     print(f"A (uncompiled): {ask(program, HANDBOOK, question)}\n")
 
-    print("Compiling with BootstrapFewShot...")
+    suite = get_suite(opik.Opik())
+
+    print("Running the suite against the uncompiled program...")
+    before = run_suite(suite, program, "dspy-uncompiled",
+                       {"program": "ChainOfThought(OpeningQA)", "compiled": False, "model": MODEL})
+
+    print("\nCompiling with BootstrapFewShot...")
     compiled = compile_program(program)
 
-    print(f"uncompiled: {pass_rate(program):.0%} pass rate")
-    print(f"compiled:   {pass_rate(compiled):.0%} pass rate")
+    print("\nRunning the same suite against the compiled program...")
+    after = run_suite(suite, compiled, "dspy-compiled",
+                      {"program": "ChainOfThought(OpeningQA)", "compiled": True,
+                       "optimizer": "BootstrapFewShot", "model": MODEL})
+
+    print("\n=== Uncompiled vs compiled ===")
+    for label, result in (("uncompiled", before), ("compiled  ", after)):
+        print(f"{label}: {result.pass_rate:.0%} pass rate "
+              f"({result.items_passed}/{result.items_total} items passed)")
 
     # Traces are sent from a background thread; flush so none are lost at exit.
     opik.flush_tracker()
-    print(f"Traces: project {PROJECT_NAME!r} in Opik")
+    print(f"\nTraces: project {PROJECT_NAME!r} in Opik (http://localhost:5173)")
+    if after.experiment_url:
+        print(f"Runs: {after.experiment_url}")
 
 
 if __name__ == "__main__":

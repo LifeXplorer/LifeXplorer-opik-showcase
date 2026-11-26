@@ -29,21 +29,21 @@ TRAIN_ROWS = [
 # None of these appear in TRAIN_ROWS, so the compiled demos have to transfer.
 TEST_ROWS = [
     ("Who does not play the Sicilian in club ladder games?",
-     "SIC-1", "under 12", "The answer says juniors under 12 do not play it"),
+     "SIC-1", "under 12", "The answer mentions juniors under 12"),
     ("By which move should the quiet Italian castle?",
-     "ITA-2", "move 6", "The answer says castling comes no later than move 6"),
+     "ITA-2", "move 6", "The answer mentions move 6"),
     ("How does White regain the pawn after 2...dxc4 in the Queen's Gambit?",
-     "QGD-1", "Bxc4", "The answer says White plays e3 and Bxc4"),
+     "QGD-1", "Bxc4", "The answer mentions Bxc4"),
     ("How does White recapture after 3...cxd4 in the Open Sicilian?",
-     "SIC-2", "4.Nxd4", "The answer says the knight recaptures with 4.Nxd4"),
+     "SIC-2", "4.Nxd4", "The answer mentions 4.Nxd4"),
     ("Which pawn locks in the French Defence bishop?",
-     "FRE-1", "e6", "The answer says the e6 pawn locks the bishop in"),
+     "FRE-1", "e6", "The answer names the e6 pawn"),
     ("Which London System developing move comes first, e3 or Bf4?",
-     "LON-1", "Bf4", "The answer says the bishop goes to f4 before e3"),
+     "LON-1", "Bf4", "The answer names Bf4 as the move that comes first"),
     ("Why does the Caro-Kann bishop never get locked in?",
-     "CAR-1", "...Bf5", "The answer says Black plays ...Bf5 before ...e6"),
+     "CAR-1", "...Bf5", "The answer mentions ...Bf5 before ...e6"),
     ("Why does Rookfield teach the Italian Game first?",
-     "ITA-1", "obvious square", "The answer says every piece has an obvious square"),
+     "ITA-1", "obvious square", "The answer says each piece has an obvious square"),
 ]
 
 

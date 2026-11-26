@@ -1,4 +1,5 @@
 // Three scripted customer requests through the front-desk agent: `npm run demo`.
+// Each request becomes one trace in the Opik project named after this folder.
 import "./env.ts";
 
 if (!process.env.OPENAI_API_KEY) {
@@ -16,9 +17,11 @@ console.warn = (...args: unknown[]) => {
 
 const { VoltAgent } = await import("@voltagent/core");
 const { frontDesk } = await import("./agent.ts");
+const { observability, PROJECT } = await import("./observability.ts");
 
-// Registering the agent on a VoltAgent instance; no `server` means no HTTP server.
-new VoltAgent({ agents: { frontDesk } });
+// Passing `observability` hands VoltAgent the Opik-bound tracer: every agent
+// call becomes a trace. No `server` means no HTTP server; this stays a script.
+new VoltAgent({ agents: { frontDesk }, observability });
 
 const REQUESTS = [
   // 1. One tool: repair_status.
@@ -36,4 +39,7 @@ for (const [i, request] of REQUESTS.entries()) {
   console.log(`Assistant: ${result.text}`);
 }
 
+// Flush the batch exporter so the last spans reach Opik before the process exits.
+await observability.shutdown();
+console.log(`\nDone. Open the "${PROJECT}" project in Opik to see the traces.`);
 process.exit(0);

@@ -1,0 +1,13 @@
+[project]
+name = "langflow-makerspace-assistant"
+version = "0.1.0"
+description = "A Langflow chat flow for a makerspace, traced into Opik by Langflow's native integration"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "langflow>=1.6,<1.9",
+    "opik==1.10.52",
+    "python-dotenv",
+]
+
+[tool.uv]
+package = false

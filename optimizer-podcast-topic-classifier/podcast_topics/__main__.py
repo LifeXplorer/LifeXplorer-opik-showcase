@@ -1,4 +1,4 @@
-"""Score the baseline prompt on every labeled episode: python -m podcast_topics"""
+"""Score the baseline, then optimize it: python -m podcast_topics"""
 
 import os
 
@@ -14,6 +14,7 @@ dotenv.load_dotenv(dotenv.find_dotenv(usecwd=True))
 from .classifier import classify
 from .episodes import EPISODES
 from .metric import topic_accuracy
+from .optimize import run as optimize
 
 
 def main() -> None:
@@ -26,6 +27,9 @@ def main() -> None:
     print(f"\nbaseline accuracy: {sum(scores) / len(scores):.3f} on {len(scores)} episodes")
     # Traces are sent from a background thread; flush so none are lost at exit.
     opik.flush_tracker()
+
+    print("\nOptimizing the prompt...")
+    optimize()
 
 
 if __name__ == "__main__":

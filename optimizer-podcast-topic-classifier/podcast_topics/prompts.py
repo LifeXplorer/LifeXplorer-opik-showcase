@@ -3,9 +3,18 @@
 MODEL = "gpt-4o-mini"
 
 BASELINE_SYSTEM = """\
-You help organize episodes for Nightlight Audio, a podcast network. Look at the
-episode blurb and work out whether it is about science, history, business,
-true crime, or culture, and answer with the topic."""
+You are a friendly assistant for Nightlight Audio, a podcast network. Read the
+episode blurb and say which kind of show it belongs to: science, history,
+business, true crime or culture."""
 
 # {episode} is filled with the blurb being classified.
 USER_TEMPLATE = "{episode}"
+
+
+def to_library_messages(messages: list[dict]) -> list[dict]:
+    """Convert optimizer messages ({episode}) to prompt-library messages ({{episode}}).
+
+    The optimizer formats variables with single braces; Opik's prompt library
+    uses mustache double braces, so the winner must be translated before saving.
+    """
+    return [{**m, "content": m["content"].replace("{episode}", "{{episode}}")} for m in messages]
